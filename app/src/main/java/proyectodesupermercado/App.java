@@ -4,6 +4,14 @@
 package proyectodesupermercado;
 
 public class App {
+    static {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("No se pudo cargar 'com.mysql.jdbc.Driver'");
+            System.exit(-1);
+        }
+    }
     public static void main(String[] args) {
     }
 }
