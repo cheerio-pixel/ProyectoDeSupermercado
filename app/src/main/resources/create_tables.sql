@@ -1,5 +1,3 @@
-USE Prog1;
-
 CREATE TABLE IF NOT EXISTS Rol (
        id int not null primary key,
        nombre char(2) not null
