@@ -3,14 +3,21 @@
  */
 package proyectodesupermercado;
 
+import java.security.SecureRandom;
+
 public class App {
+    public static ThreadLocal<SecureRandom> secureRandom;
     static {
+        // init mysql driver
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.err.println("No se pudo cargar 'com.mysql.jdbc.Driver'");
             System.exit(-1);
         }
+
+        // init secureRandom
+        secureRandom = ThreadLocal.withInitial(SecureRandom::new);
     }
     public static void main(String[] args) {
     }
