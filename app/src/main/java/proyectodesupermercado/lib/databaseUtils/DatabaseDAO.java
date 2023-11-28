@@ -3,7 +3,6 @@ package proyectodesupermercado.lib.databaseUtils;
 import proyectodesupermercado.lib.databaseUtils.annotations.Id;
 import proyectodesupermercado.lib.databaseUtils.exceptions.AnnotationIdNotFoundException;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,12 +19,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class DatabaseDAO<T> implements DataAccessObject<T> {
-    private Class<T> clazz;
-    private @Nonnull String tableName;
-    private @Nonnull String idName;
+    private final Class<T> clazz;
+    private final String tableName;
+    private final String idName;
     private Field idField;
-    private DatabaseEnvironment dbEnv;
-    private TableMapper<T> tableMapper;
+    private final DatabaseEnvironment dbEnv;
+    private final TableMapper<T> tableMapper;
     public DatabaseDAO(Class<T> clazz, DatabaseEnvironment dbEnv, TableMapper<T> tableMapper) {
         this.clazz = clazz;
         this.dbEnv = dbEnv;
@@ -89,7 +88,7 @@ public abstract class DatabaseDAO<T> implements DataAccessObject<T> {
                 idName +
                 " = ?";
         try (Connection conn = dbEnv.getConnection();
-             PreparedStatement statement = conn.prepareStatement(partialStatement);
+             PreparedStatement statement = conn.prepareStatement(partialStatement)
         ) {
             for (int i = 0; i < values.size(); i++) {
                 statement.setObject(i + 1, values.get(i));
@@ -133,7 +132,7 @@ public abstract class DatabaseDAO<T> implements DataAccessObject<T> {
                 "(" + String.join(", ", "?".repeat(values.size()).split("")) + ")";
         System.out.println(partialStatement);
         try (Connection conn = dbEnv.getConnection();
-             PreparedStatement statement = conn.prepareStatement(partialStatement);)
+             PreparedStatement statement = conn.prepareStatement(partialStatement))
         {
             for (int i = 0; i < values.size(); i++) {
                 statement.setObject(i + 1, values.get(i));
@@ -208,12 +207,10 @@ public abstract class DatabaseDAO<T> implements DataAccessObject<T> {
         return clazz;
     }
 
-    @Nonnull
     protected String getTableName() {
         return tableName;
     }
 
-    @Nonnull
     protected String getIdName() {
         return idName;
     }

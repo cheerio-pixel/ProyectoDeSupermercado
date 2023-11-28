@@ -1,6 +1,5 @@
 package proyectodesupermercado.lib.swingadditions;
 
-import javax.annotation.Nonnull;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
@@ -12,7 +11,7 @@ import java.util.function.Consumer;
 public class OnDoubleClick extends MouseAdapter {
     private final Consumer<Object> doubleClickAction;
 
-    public OnDoubleClick(@Nonnull Consumer<Object> doubleClickAction) {
+    public OnDoubleClick(Consumer<Object> doubleClickAction) {
         this.doubleClickAction = doubleClickAction;
     }
 
