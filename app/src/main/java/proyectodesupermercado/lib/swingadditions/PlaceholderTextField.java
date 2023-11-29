@@ -39,8 +39,9 @@ public class PlaceholderTextField extends JTextField {
         return placeholder;
     }
 
-    public void setPlaceholder(final String s) {
+    public JTextField setPlaceholder(final String s) {
         placeholder = s;
+        return this;
     }
 
     @Override
@@ -61,6 +62,9 @@ public class PlaceholderTextField extends JTextField {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(getDisabledTextColor());
         g.drawString(placeholder, getInsets().left, pG.getFontMetrics()
-                .getMaxAscent() + getInsets().top);
+                .getMaxAscent() + getInsets().top
+                + (pG.getFontMetrics()
+                .getMaxAscent() + getInsets().top) / 4
+        );
     }
 }
