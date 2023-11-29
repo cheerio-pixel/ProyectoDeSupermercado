@@ -11,22 +11,27 @@ import proyectodesupermercado.lib.swingadditions.PlaceholderTextField;
  * @author IA
  */
 public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton busquedaButton;
-    private javax.swing.JTextField busquedaTextField;
-
     /**
      * Creates new form Creador_De_solicitud_De_Compra
      */
     public Creador_De_solicitud_De_Compra() {
         initComponents();
-        busquedaTextField = new PlaceholderTextField(busquedaTextField.getText());
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton busquedaButton;
+    private javax.swing.JTextField busquedaTextField;
+    private javax.swing.JTable solicitudTabla;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,7 +42,7 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        busquedaTextField = new javax.swing.JTextField();
+        busquedaTextField = new PlaceholderTextField().setPlaceholder("Busqueda");
         busquedaButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -45,10 +50,9 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        solicitudTabla = new javax.swing.JTable();
 
         busquedaTextField.setColumns(9);
-        busquedaTextField.setText("Busqueda");
         busquedaTextField.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.gray, java.awt.Color.gray, java.awt.Color.gray));
 
         busquedaButton.setText("Buscar");
@@ -81,7 +85,7 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
         jButton4.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
         jButton4.setText("Enviar Solicitud");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        solicitudTabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -92,7 +96,7 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
                 "Nombre Producto", "Unidades", "Precio por Unidad"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(solicitudTabla);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -106,9 +110,9 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(busquedaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(busquedaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(28, 28, 28))
@@ -137,12 +141,5 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
                             .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }
