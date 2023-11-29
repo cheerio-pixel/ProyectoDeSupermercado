@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TableMapper<T> {
-    private Map<String, Field> fieldToTableColumn;
+    private final Map<String, Field> fieldToTableColumn;
     private final Class<T> clazz;
     private final String tableName;
     public TableMapper(Class<T> clazz) {
@@ -47,13 +47,16 @@ public class TableMapper<T> {
 ////        fieldToTableColumn.entrySet().stream()
 ////                .
 //    }
-
+    public T mapResultSetToObject(ResultSet resultSet) {
+        return mapResultSetToObject(resultSet, true);
+    }
     /**
      * Takes care of taking the current row of result set and converting it into an object
      * @param resultSet The result set at current row.
+     * @param useFullyQuallifiedNames Indicate if we want to use fully quallyfied names for table names
      * @return An object with all the specified attributes filled.
      */
-    public T mapResultSetToObject(ResultSet resultSet) {
+    public T mapResultSetToObject(ResultSet resultSet, boolean useFullyQuallifiedNames) {
         T prototype = getNewObject();
         for (Map.Entry<String, Field> colToFieldEntry : fieldToTableColumn.entrySet()) {
             try {
@@ -70,7 +73,7 @@ public class TableMapper<T> {
                         // Can't simply assign null
                         fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
                     }
-                } else if (isThere(resultSet, (fullyQuallifiedColumnName = tableName + "." + colToFieldEntry.getKey()))) {
+                } else if (isThere(resultSet, (fullyQuallifiedColumnName = (useFullyQuallifiedNames ? tableName + "." : "") + colToFieldEntry.getKey()))) {
                     fieldValue = resultSet.getObject(fullyQuallifiedColumnName);
                 }
                 colToFieldEntry.getValue().set(prototype, fieldValue);
