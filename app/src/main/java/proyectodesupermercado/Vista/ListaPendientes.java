@@ -19,11 +19,6 @@ import java.util.function.Consumer;
  */
 public class ListaPendientes<T> extends javax.swing.JDialog {
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cerrarButton;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<T> pendientesJList;
-
     /**
      * Creates new form ListaPendientes
      */
@@ -99,5 +94,10 @@ public class ListaPendientes<T> extends javax.swing.JDialog {
     private void cerrarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarButtonActionPerformed
         close();
     }//GEN-LAST:event_cerrarButtonActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cerrarButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<T> pendientesJList;
     // End of variables declaration//GEN-END:variables
 }

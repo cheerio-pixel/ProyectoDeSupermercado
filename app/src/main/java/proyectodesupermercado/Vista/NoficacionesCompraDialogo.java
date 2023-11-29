@@ -20,13 +20,6 @@ public class NoficacionesCompraDialogo<T> extends javax.swing.JDialog {
 
     private final Consumer<List<T>> action;
     private final boolean closeOnAction;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buscarButton;
-    private javax.swing.JTextField busquedaTextfield;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<T> notificacionesJList;
-    private javax.swing.JButton refresh;
-    private javax.swing.JButton solicitarButton;
     /**
      * Creates new form NoficacionesCompraDialogo
      */
@@ -133,5 +126,13 @@ public class NoficacionesCompraDialogo<T> extends javax.swing.JDialog {
         }
         action.accept(notificacionesJList.getSelectedValuesList());
     }//GEN-LAST:event_solicitarButtonActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buscarButton;
+    private javax.swing.JTextField busquedaTextfield;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<T> notificacionesJList;
+    private javax.swing.JButton refresh;
+    private javax.swing.JButton solicitarButton;
     // End of variables declaration//GEN-END:variables
 }
