@@ -1,4 +1,4 @@
-package proyectodesupermercado.authentication;
+package proyectodesupermercado.controller.authentication;
 
 import proyectodesupermercado.App;
 
