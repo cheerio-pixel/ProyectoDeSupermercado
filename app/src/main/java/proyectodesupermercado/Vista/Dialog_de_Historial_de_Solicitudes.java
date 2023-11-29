@@ -4,16 +4,22 @@
  */
 package proyectodesupermercado.Vista;
 
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author IA
  */
-public class Deialogo_de_Historiar_de_Solicitudes extends javax.swing.JPanel {
+public class Dialog_de_Historial_de_Solicitudes extends javax.swing.JDialog {
 
     /**
-     * Creates new form Deialogo_de_Historiar_de_Solicitudes
+     * Creates new form Dialog_de_Historial_de_Solicitudes
      */
-    public Deialogo_de_Historiar_de_Solicitudes() {
+    public Dialog_de_Historial_de_Solicitudes(JComponent parent, boolean modal) {
+        super((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent), modal);
+        setLocationRelativeTo(parent);
         initComponents();
     }
 
@@ -32,8 +38,6 @@ public class Deialogo_de_Historiar_de_Solicitudes extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-
-        setToolTipText("Dialogo de Hisotoriar de solicitudes");
 
         jTextField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.gray, java.awt.Color.gray, java.awt.Color.gray));
 
