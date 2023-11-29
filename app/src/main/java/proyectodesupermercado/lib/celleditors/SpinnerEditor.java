@@ -7,6 +7,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -19,6 +20,12 @@ public class SpinnerEditor extends DefaultCellEditor implements TableCellRendere
     JSpinner.DefaultEditor editor;
     JTextField textField;
     boolean valueSet;
+
+    public static void setEditorAndRendererOnTable(JTable table, int index, SpinnerEditor editor) {
+        TableColumn column = table.getColumn(index);
+        column.setCellEditor(editor);
+        column.setCellRenderer(editor);
+    }
 
     // Initializes the spinner.
     public SpinnerEditor(JSpinner spinner) {
