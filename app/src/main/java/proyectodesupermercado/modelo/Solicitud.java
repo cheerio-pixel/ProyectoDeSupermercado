@@ -8,6 +8,9 @@ package proyectodesupermercado.modelo;
  *
  * @author IA
  */
-public class solicitud  extends groupWithCreationDate  {
-    
+public class Solicitud extends GroupWithCreationDate<SolicitudProducto> {
+
+    public Solicitud(long id) {
+        super(id);
+    }
 }

@@ -8,10 +8,9 @@ package proyectodesupermercado.modelo;
  *
  * @author IA
  */
-import java.sql.Timestamp;
+public class Transaction extends GroupWithCreationDate<Transaction> {
 
-public class groupWithCreationDate extends group{
-    
-    private Timestamp fechaDeCreacion = new Timestamp(System.currentTimeMillis());
-    
+    public Transaction(long id) {
+        super(id);
+    }
 }

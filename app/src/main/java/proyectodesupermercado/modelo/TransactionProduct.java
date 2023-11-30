@@ -11,5 +11,9 @@ package proyectodesupermercado.modelo;
 public class TransactionProduct extends Productos {
     private double taxes;
     private double totalAfterTaxes;
+
+    TransactionProduct(long id, String description, double precePerUnit, int quantity) {
+        super(id, description, precePerUnit, quantity);
+    }
 }
 

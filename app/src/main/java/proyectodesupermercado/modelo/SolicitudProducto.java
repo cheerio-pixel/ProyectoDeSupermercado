@@ -9,12 +9,12 @@ package proyectodesupermercado.modelo;
  * @author IA
  */
 
-public class solocitudProducto extends Productos {
+public class SolicitudProducto extends Productos {
     
     private double  pricePurchasePerUnit;
-    
-    
-     public solocitudProducto(long id, String description, double precePerUnit, int quantity)
+
+
+    public SolicitudProducto(long id, String description, double precePerUnit, int quantity)
      {
         super(id, description, precePerUnit, quantity);
     }

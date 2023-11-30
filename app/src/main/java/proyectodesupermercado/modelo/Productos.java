@@ -9,14 +9,14 @@ package proyectodesupermercado.modelo;
  * @author IA
  */
 public class Productos {
-    private long id;
-    private String description;
-    private double precePerUnit;
-    private int quantity ;
-    
-    Productos(long id , String description ,double precePerUnit , int quantity)
+    private final long id;
+    private final String description;
+    private final double precePerUnit;
+    private final int quantity;
+
+    Productos(long id, String description, double precePerUnit, int quantity)
     {
-        this.id =id ;
+        this.id = id;
         this.description = description;
         this.precePerUnit = precePerUnit;
         this.quantity = quantity;
