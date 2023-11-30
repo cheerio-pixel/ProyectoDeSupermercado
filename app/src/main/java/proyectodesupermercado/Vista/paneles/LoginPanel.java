@@ -2,30 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectodesupermercado.Vista;
+package proyectodesupermercado.Vista.paneles;
 
-import proyectodesupermercado.controller.SesionUsuario;
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.interfaces.SesionUsuario;
 
 /**
  * @author cheerio-pixel
  */
 public class LoginPanel extends javax.swing.JPanel {
 
-    SesionUsuario sesionUsuario;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPasswordField contraseñaPasswordField;
-    private javax.swing.JButton incioDeSesionButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JFrame jFrame1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField usuarioTextfield;
+    private final SesionUsuario sesionUsuario;
     /**
      * Creates new form LoginPanel
      */
@@ -183,5 +170,20 @@ public class LoginPanel extends javax.swing.JPanel {
         sesionUsuario.logUser(usuarioTextfield.getText(), contraseñaPasswordField.getPassword())
                 .failureOrValue(msg -> ReportInView.error(this, msg));
     }//GEN-LAST:event_incioDeSesionButtonActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField contraseñaPasswordField;
+    private javax.swing.JButton incioDeSesionButton;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField usuarioTextfield;
     // End of variables declaration//GEN-END:variables
 }

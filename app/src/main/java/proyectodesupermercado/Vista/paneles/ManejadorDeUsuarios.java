@@ -2,24 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package proyectodesupermercado.Vista;
+package proyectodesupermercado.Vista.paneles;
 
 /**
  * @author cheerio-pixel
  */
 public class ManejadorDeUsuarios extends javax.swing.JPanel {
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton guardarButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField nombreTextfield;
-    private javax.swing.JPasswordField passwordTextfield;
-    private javax.swing.JButton refrescarButton;
-    private javax.swing.JComboBox<String> rolComboBox;
-    private javax.swing.JTable usuarioTabla;
     /**
      * Creates new form ManejadorDeUsuarios
      */
@@ -126,5 +115,17 @@ public class ManejadorDeUsuarios extends javax.swing.JPanel {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton guardarButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField nombreTextfield;
+    private javax.swing.JPasswordField passwordTextfield;
+    private javax.swing.JButton refrescarButton;
+    private javax.swing.JComboBox<String> rolComboBox;
+    private javax.swing.JTable usuarioTabla;
     // End of variables declaration//GEN-END:variables
 }

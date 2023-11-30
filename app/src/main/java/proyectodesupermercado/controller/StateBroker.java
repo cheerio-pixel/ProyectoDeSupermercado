@@ -1,26 +1,29 @@
 package proyectodesupermercado.controller;
 
 import proyectodesupermercado.Vista.ContentChanger;
-import proyectodesupermercado.Vista.CreacionProductos;
-import proyectodesupermercado.Vista.Creador_De_solicitud_De_Compra;
-import proyectodesupermercado.Vista.Gestor_De_Empresas;
-import proyectodesupermercado.Vista.LoginPanel;
-import proyectodesupermercado.Vista.ManejadorDeUsuarios;
-import proyectodesupermercado.Vista.Manejo_de_inventario;
-import proyectodesupermercado.Vista.PanelPuntoDeVenta;
+import proyectodesupermercado.Vista.interfaces.SesionUsuario;
+import proyectodesupermercado.Vista.paneles.LoginPanel;
+import proyectodesupermercado.Vista.roles.ViewCreator;
+import proyectodesupermercado.controller.authentication.Rol;
 import proyectodesupermercado.controller.authentication.Usuario;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import java.awt.BorderLayout;
+import java.util.Map;
+import java.util.Optional;
 
 public class StateBroker {
     private final ContentChanger changer;
     private final Runnable closeAplication;
+    private final Map<Rol, ViewCreator> rolViewCreator;
 
-    public StateBroker(ContentChanger changer, Runnable closeAplication) {
+    public StateBroker(
+            ContentChanger changer,
+            Runnable closeAplication,
+            Map<Rol, ViewCreator> rolViewCreator
+    ) {
         this.changer = changer;
         this.closeAplication = closeAplication;
+        this.rolViewCreator = rolViewCreator;
     }
 
     public void moveToLogin(SesionUsuario sesionUsuario) {
@@ -32,38 +35,12 @@ public class StateBroker {
     }
 
     public void moveToLoggedScreen(Usuario usuario, Runnable cerrarSesionAction) {
-        JPanel content = null;
-        switch (usuario.getRol()) {
-            case Inventario: {
-                content = new Manejo_de_inventario();
-            }
-            break;
-            case Gerente: {
-                JTabbedPane tabs = new JTabbedPane();
-                tabs.setTabPlacement(JTabbedPane.LEFT);
-                tabs.addTab("Gestor de Empresas", new Gestor_De_Empresas());
-                tabs.addTab("Manejador de compras", new Creador_De_solicitud_De_Compra());
-                tabs.addTab("Crear/Borrar productos", new CreacionProductos());
-
-                content = new JPanel(new BorderLayout());
-                content.add(tabs);
-            }
-            break;
-            case AdminIT: {
-//                JTabbedPane tabs = new JTabbedPane();
-//                tabs.setTabPlacement(JTabbedPane.LEFT);
-//                tabs.addTab("Usuarios", new ManejadorDeUsuarios());
-//                content = new JPanel(new BorderLayout());
-//                content.add(tabs);
-
-                content = new ManejadorDeUsuarios();
-            }
-            break;
-            case PuntoDeVenta: {
-                content = new PanelPuntoDeVenta();
-            }
-            break;
-        }
+        // TODO: Hacer que esto logee en vez de lanzar una exeception
+        JPanel content = Optional.ofNullable(rolViewCreator.get(usuario.getRol()))
+                .map(ViewCreator::create)
+                .orElseThrow(() -> new RuntimeException(
+                        "Rol " + usuario.getRol().getNombre() + " no tiene una vista registrada."
+                ));
         changer.setContent(
                 content,
                 "Cerrar sesion",
