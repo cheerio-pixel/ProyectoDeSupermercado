@@ -11,4 +11,9 @@ package proyectodesupermercado.modelo;
 public class departamento extends group {
     private String nombre;
     
+     public departamento(long id, String nombre) {
+        super(id);
+        this.nombre = nombre;
+    }
+    
 }
