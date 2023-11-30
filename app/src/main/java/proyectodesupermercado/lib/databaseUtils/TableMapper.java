@@ -7,8 +7,11 @@ import proyectodesupermercado.lib.databaseUtils.annotations.Table;
 import proyectodesupermercado.lib.databaseUtils.exceptions.AnnotationIdNotFoundException;
 import proyectodesupermercado.lib.databaseUtils.exceptions.AnnotationTableNotFoundException;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -65,22 +68,42 @@ public class TableMapper<T> {
                 Object fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
                 String fullyQuallifiedColumnName;
                 if (colToFieldEntry.getValue().isAnnotationPresent(ManyToOne.class)) {
-                    // Extract values from join result
-                    // If id is not specified, then this as good as null
-                    fieldValue = new TableMapper<>(colToFieldEntry.getValue().getType())
-                            .mapResultSetToObject(resultSet);
-                    if (getIdObject(fieldValue) == null) {
-                        // Can't simply assign null
-                        fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
+                    if (colToFieldEntry.getValue().getType().isEnum()) {
+                        Object id = resultSet.getObject((useFullyQuallifiedNames ? tableName + "." : "") + colToFieldEntry.getKey());
+                        for (Object constant : colToFieldEntry.getValue().getType().getEnumConstants()) {
+                            if (getIdObject(constant).equals(id)) {
+                                fieldValue = constant;
+                            }
+                        }
+                    } else {
+                        // Extract values from join result
+                        // If id is not specified, then this as good as null
+                        fieldValue = new TableMapper<>(colToFieldEntry.getValue().getType())
+                                .mapResultSetToObject(resultSet);
+                        if (getIdObject(fieldValue) == null) {
+                            // Can't simply assign null
+                            fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
+                        }
                     }
                 } else if (isThere(resultSet, (fullyQuallifiedColumnName = (useFullyQuallifiedNames ? tableName + "." : "") + colToFieldEntry.getKey()))) {
-                    fieldValue = resultSet.getObject(fullyQuallifiedColumnName);
+                    Column col = colToFieldEntry.getValue().getAnnotation(Column.class);
+                    if (col != null && col.isJavaObject()) {
+                        Blob blob = resultSet.getBlob(fullyQuallifiedColumnName);
+                        fieldValue = new ObjectInputStream(blob.getBinaryStream()).readObject();
+                    } else {
+                        fieldValue = resultSet.getObject(fullyQuallifiedColumnName);
+                    }
                 }
                 colToFieldEntry.getValue().set(prototype, fieldValue);
             } catch (SQLException e) {
                 System.err.println("An error ocurred while mapping result set to class " + clazz.getCanonicalName());
+                System.err.println(e.getMessage());
                 System.exit(-1);
             } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
