@@ -44,7 +44,7 @@ public class ControlSolicitudes extends javax.swing.JPanel {
         jButton1.setText("Refrescar");
         jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.white, java.awt.Color.lightGray));
 
-        jButton2.setText("<html>Crear solicitud<br>de compra<html>");
+        jButton2.setText("<html>Crear Solicitud<br>de compra<html>");
         jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.white, java.awt.Color.lightGray, java.awt.Color.white, java.awt.Color.lightGray));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
