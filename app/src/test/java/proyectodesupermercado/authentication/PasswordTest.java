@@ -1,6 +1,8 @@
 package proyectodesupermercado.authentication;
 
 import org.junit.jupiter.api.Test;
+import proyectodesupermercado.controller.authentication.HashPasswordFactory;
+import proyectodesupermercado.controller.authentication.Password;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

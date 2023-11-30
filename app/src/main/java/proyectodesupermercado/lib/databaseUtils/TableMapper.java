@@ -7,8 +7,11 @@ import proyectodesupermercado.lib.databaseUtils.annotations.Table;
 import proyectodesupermercado.lib.databaseUtils.exceptions.AnnotationIdNotFoundException;
 import proyectodesupermercado.lib.databaseUtils.exceptions.AnnotationTableNotFoundException;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -17,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TableMapper<T> {
-    private Map<String, Field> fieldToTableColumn;
+    private final Map<String, Field> fieldToTableColumn;
     private final Class<T> clazz;
     private final String tableName;
     public TableMapper(Class<T> clazz) {
@@ -47,13 +50,16 @@ public class TableMapper<T> {
 ////        fieldToTableColumn.entrySet().stream()
 ////                .
 //    }
-
+    public T mapResultSetToObject(ResultSet resultSet) {
+        return mapResultSetToObject(resultSet, true);
+    }
     /**
      * Takes care of taking the current row of result set and converting it into an object
      * @param resultSet The result set at current row.
+     * @param useFullyQuallifiedNames Indicate if we want to use fully quallyfied names for table names
      * @return An object with all the specified attributes filled.
      */
-    public T mapResultSetToObject(ResultSet resultSet) {
+    public T mapResultSetToObject(ResultSet resultSet, boolean useFullyQuallifiedNames) {
         T prototype = getNewObject();
         for (Map.Entry<String, Field> colToFieldEntry : fieldToTableColumn.entrySet()) {
             try {
@@ -62,22 +68,42 @@ public class TableMapper<T> {
                 Object fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
                 String fullyQuallifiedColumnName;
                 if (colToFieldEntry.getValue().isAnnotationPresent(ManyToOne.class)) {
-                    // Extract values from join result
-                    // If id is not specified, then this as good as null
-                    fieldValue = new TableMapper<>(colToFieldEntry.getValue().getType())
-                            .mapResultSetToObject(resultSet);
-                    if (getIdObject(fieldValue) == null) {
-                        // Can't simply assign null
-                        fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
+                    if (colToFieldEntry.getValue().getType().isEnum()) {
+                        Object id = resultSet.getObject((useFullyQuallifiedNames ? tableName + "." : "") + colToFieldEntry.getKey());
+                        for (Object constant : colToFieldEntry.getValue().getType().getEnumConstants()) {
+                            if (getIdObject(constant).equals(id)) {
+                                fieldValue = constant;
+                            }
+                        }
+                    } else {
+                        // Extract values from join result
+                        // If id is not specified, then this as good as null
+                        fieldValue = new TableMapper<>(colToFieldEntry.getValue().getType())
+                                .mapResultSetToObject(resultSet);
+                        if (getIdObject(fieldValue) == null) {
+                            // Can't simply assign null
+                            fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
+                        }
                     }
-                } else if (isThere(resultSet, (fullyQuallifiedColumnName = tableName + "." + colToFieldEntry.getKey()))) {
-                    fieldValue = resultSet.getObject(fullyQuallifiedColumnName);
+                } else if (isThere(resultSet, (fullyQuallifiedColumnName = (useFullyQuallifiedNames ? tableName + "." : "") + colToFieldEntry.getKey()))) {
+                    Column col = colToFieldEntry.getValue().getAnnotation(Column.class);
+                    if (col != null && col.isJavaObject()) {
+                        Blob blob = resultSet.getBlob(fullyQuallifiedColumnName);
+                        fieldValue = new ObjectInputStream(blob.getBinaryStream()).readObject();
+                    } else {
+                        fieldValue = resultSet.getObject(fullyQuallifiedColumnName);
+                    }
                 }
                 colToFieldEntry.getValue().set(prototype, fieldValue);
             } catch (SQLException e) {
                 System.err.println("An error ocurred while mapping result set to class " + clazz.getCanonicalName());
+                System.err.println(e.getMessage());
                 System.exit(-1);
             } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }

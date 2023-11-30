@@ -22,16 +22,7 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton busquedaButton;
-    private javax.swing.JTextField busquedaTextField;
-    private javax.swing.JTable solicitudTabla;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -141,5 +132,16 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
                             .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton busquedaButton;
+    private javax.swing.JTextField busquedaTextField;
+    private javax.swing.JTable solicitudTabla;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
