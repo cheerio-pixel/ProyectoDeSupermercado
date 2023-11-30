@@ -63,7 +63,7 @@ public class Creador_De_solicitud_De_Compra extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
-        jButton2.setText("Añadir Producto a solicitud");
+        jButton2.setText("Añadir Producto a Solicitud");
 
         jButton3.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
         jButton3.setText("Borrar producto");

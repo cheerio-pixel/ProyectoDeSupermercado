@@ -69,7 +69,7 @@ public class NoficacionesCompraDialogo<T> extends javax.swing.JDialog {
 
         refresh.setText("Refrescar");
 
-        solicitarButton.setText("<html>\n<div style='text-align: center;'>\nCrear<br>solicitud\n</div>\n<html>");
+        solicitarButton.setText("<html>\n<div style='text-align: center;'>\nCrear<br>Solicitud\n</div>\n<html>");
         solicitarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 solicitarButtonActionPerformed(evt);
