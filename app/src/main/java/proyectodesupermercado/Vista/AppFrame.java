@@ -14,11 +14,6 @@ public class AppFrame extends javax.swing.JFrame implements ContentChanger {
 
     private JPanel currentPanel;
     private ActionListener currentGoBackAction;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel bodyPanel;
-    private javax.swing.JButton goBackButton;
-    private javax.swing.JLabel goBackLabel;
-    private javax.swing.JSeparator jSeparator1;
     /**
      * Creates new form AppFrame
      */
@@ -98,5 +93,11 @@ public class AppFrame extends javax.swing.JFrame implements ContentChanger {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel bodyPanel;
+    private javax.swing.JButton goBackButton;
+    private javax.swing.JLabel goBackLabel;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
