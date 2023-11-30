@@ -28,7 +28,8 @@ public class Environment implements SesionUsuario {
 
     @Override
     public Result<Usuario> logUser(String nombre, char[] contraseña) {
-        Optional<Usuario> usuarioOptional = usuarioDAO.listByName(nombre);
+        Optional<Usuario> usuarioOptional = usuarioDAO.listByName(nombre)
+                .filter(u -> u.checkPassword(contraseña));
         if (usuarioOptional.isEmpty()) {
             return new Result<>(null, "La contraseña o nombre de usuario es invalido.");
         }
