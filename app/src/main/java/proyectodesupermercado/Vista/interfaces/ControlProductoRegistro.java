@@ -8,6 +8,7 @@ import proyectodesupermercado.lib.tableModel.ObjectTableModel;
 import proyectodesupermercado.modelo.ProductoRegistro;
 import proyectodesupermercado.modelo.Suplidor;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,6 +16,13 @@ import java.util.Optional;
  */
 public interface ControlProductoRegistro {
     ObjectTableModel<ProductoRegistro> refresh();
+
+    /**
+     * Obten la lista de todos los suplidores disponibles
+     *
+     * @return Lista de suplidores
+     */
+    List<Suplidor> supplyAllSuplidores();
 
     ObjectTableModel<ProductoRegistro> search(String nombre, Suplidor suplidor);
 
