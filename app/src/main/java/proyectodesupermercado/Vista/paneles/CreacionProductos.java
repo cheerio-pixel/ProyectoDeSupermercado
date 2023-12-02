@@ -4,6 +4,18 @@
  */
 package proyectodesupermercado.Vista.paneles;
 
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.TableUtils;
+import proyectodesupermercado.Vista.interfaces.ControlProductoRegistro;
+import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.ProductoRegistro;
+import proyectodesupermercado.modelo.Suplidor;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import java.awt.Component;
+
 /**
  * @author IA
  */
@@ -11,13 +23,46 @@ public class CreacionProductos extends javax.swing.JPanel {
     /**
      * Creates new form Creacion_De_Productos
      */
-    public CreacionProductos() {
+    public CreacionProductos(ControlProductoRegistro accionesProductoRegistro) {
         initComponents();
+        this.accionesProductoRegistro = accionesProductoRegistro;
+        suplidoresCombox.setRenderer(
+                new DefaultListCellRenderer() {
+                    @Override
+                    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                        Object res = value;
+                        if (value != null) {
+                            res = ((Suplidor) value).getNombre();
+                        }
+                        return super.getListCellRendererComponent(list, res, index, isSelected, cellHasFocus);
+                    }
+                }
+        );
+
+        refreshTable();
+        refreshSuplidoresCombobox();
     }
 
-    private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_eliminarButtonActionPerformed
+    private final ControlProductoRegistro accionesProductoRegistro;
+    private ObjectTableModel<ProductoRegistro> mainModel;
+
+    public void refreshSuplidoresCombobox() {
+        DefaultComboBoxModel<Suplidor> suplidor = new DefaultComboBoxModel<>(
+                new Suplidor[]{null}
+        );
+        suplidor.addAll(
+                accionesProductoRegistro.supplyAllSuplidores()
+        );
+        suplidoresCombox.setModel(suplidor);
+    }
+
+    public void refreshTable() {
+        refreshTable(accionesProductoRegistro.refresh());
+    }
+
+    public void refreshTable(ObjectTableModel<ProductoRegistro> model) {
+        productoRegistroTable.setModel(mainModel = model);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,7 +74,7 @@ public class CreacionProductos extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane3 = new javax.swing.JScrollPane();
-        productoRegistroTextfield = new javax.swing.JTable();
+        productoRegistroTable = new javax.swing.JTable();
         añadirButton = new javax.swing.JButton();
         editarButton = new javax.swing.JButton();
         eliminarButton = new javax.swing.JButton();
@@ -38,7 +83,7 @@ public class CreacionProductos extends javax.swing.JPanel {
         buscarButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
 
-        productoRegistroTextfield.setModel(new javax.swing.table.DefaultTableModel(
+        productoRegistroTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
 
                 },
@@ -46,7 +91,7 @@ public class CreacionProductos extends javax.swing.JPanel {
                         "Producto", "Sup"
                 }
         ));
-        jScrollPane3.setViewportView(productoRegistroTextfield);
+        jScrollPane3.setViewportView(productoRegistroTable);
 
         añadirButton.setText("Añadir");
         añadirButton.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +177,9 @@ public class CreacionProductos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        // Considering it
         // Let's make this button also refresh the list of Supliers while at it
+        refreshTable();
         // TODO add your handling code here:
     }//GEN-LAST:event_refreshButtonActionPerformed
 
@@ -145,8 +192,27 @@ public class CreacionProductos extends javax.swing.JPanel {
     }//GEN-LAST:event_añadirButtonActionPerformed
 
     private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
-        // TODO add your handling code here:
+        refreshTable(
+                accionesProductoRegistro.search(
+                        busquedaTextfield.getText(),
+                        ((Suplidor) suplidoresCombox.getSelectedItem())
+                ));
     }//GEN-LAST:event_buscarButtonActionPerformed
+
+    private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
+        int index = TableUtils.getSelectedIndex(productoRegistroTable, "Debe de seleccionar un producto.");
+        if (index == -1) return;
+
+        ProductoRegistro productoRegistro = mainModel.getRow(index);
+
+        if (!ReportInView.confirmYesOrNo(
+                eliminarButton,
+                String.format("¿Quieres eliminar el producto '%s'?", productoRegistro.getNombre()))) {
+            return;
+        }
+        accionesProductoRegistro.deleteProductoRegistro(productoRegistro);
+    }//GEN-LAST:event_eliminarButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton añadirButton;
@@ -155,7 +221,7 @@ public class CreacionProductos extends javax.swing.JPanel {
     private javax.swing.JButton editarButton;
     private javax.swing.JButton eliminarButton;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable productoRegistroTextfield;
+    private javax.swing.JTable productoRegistroTable;
     private javax.swing.JButton refreshButton;
     private javax.swing.JComboBox<Suplidor> suplidoresCombox;
     // End of variables declaration//GEN-END:variables

@@ -19,4 +19,8 @@ public class Suplidor {
     private String nombre;
     private String direccion;
     private List<String> telefonos;
+
+    public String getNombre() {
+        return nombre;
+    }
 }

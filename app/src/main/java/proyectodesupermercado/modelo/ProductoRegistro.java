@@ -26,4 +26,7 @@ public class ProductoRegistro {
 
     }
 
+    public String getNombre() {
+        return nombre;
+    }
 }
