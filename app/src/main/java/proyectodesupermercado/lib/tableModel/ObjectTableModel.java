@@ -22,9 +22,9 @@ public class ObjectTableModel<T> extends AbstractTableModel {
         if (res == null) {
             // Compute columns
             res = Arrays.stream(clazz.getDeclaredFields())
-                    .filter(f -> f.isAnnotationPresent(Column.class))
+                    .filter(f -> f.isAnnotationPresent(TableModelColumn.class))
                     .peek(f -> f.setAccessible(true))
-                    .sorted(Comparator.comparingInt(f -> f.getAnnotation(Column.class).index()))
+                    .sorted(Comparator.comparingInt(f -> f.getAnnotation(TableModelColumn.class).index()))
                     .collect(Collectors.toUnmodifiableList());
             fieldPool.put(clazz, res);
         }
@@ -77,7 +77,7 @@ public class ObjectTableModel<T> extends AbstractTableModel {
 
     @Override
     public String getColumnName(int column) {
-        String name = columns.get(column).getAnnotation(Column.class).name();
+        String name = columns.get(column).getAnnotation(TableModelColumn.class).name();
         if (name.isEmpty()) {
             return columns.get(column).getName();
         }
@@ -91,6 +91,6 @@ public class ObjectTableModel<T> extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columns.get(columnIndex).getAnnotation(Column.class).isEditable();
+        return columns.get(columnIndex).getAnnotation(TableModelColumn.class).isEditable();
     }
 }
