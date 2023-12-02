@@ -49,8 +49,18 @@ public class CreacionProductos extends javax.swing.JPanel {
         jScrollPane3.setViewportView(productoRegistroTextfield);
 
         añadirButton.setText("Añadir");
+        añadirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                añadirButtonActionPerformed(evt);
+            }
+        });
 
         editarButton.setText("Editar");
+        editarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarButtonActionPerformed(evt);
+            }
+        });
 
         eliminarButton.setText("Eliminar");
         eliminarButton.addActionListener(new java.awt.event.ActionListener() {
@@ -62,6 +72,18 @@ public class CreacionProductos extends javax.swing.JPanel {
         busquedaTextfield.setColumns(9);
 
         buscarButton.setText("Buscar");
+        buscarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarButtonActionPerformed(evt);
+            }
+        });
+
+        refreshButton.setText("Refrescar");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -77,7 +99,8 @@ public class CreacionProductos extends javax.swing.JPanel {
                                                                 .addComponent(añadirButton)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addComponent(editarButton)
-                                                                .addGap(0, 0, Short.MAX_VALUE))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(refreshButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                         .addComponent(busquedaTextfield)
                                                         .addComponent(suplidoresCombox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addGap(12, 12, 12)
@@ -100,12 +123,30 @@ public class CreacionProductos extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(añadirButton)
                                         .addComponent(editarButton)
-                                        .addComponent(eliminarButton))
+                                        .addComponent(eliminarButton)
+                                        .addComponent(refreshButton))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        // Let's make this button also refresh the list of Supliers while at it
+        // TODO add your handling code here:
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editarButtonActionPerformed
+
+    private void añadirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_añadirButtonActionPerformed
+
+    private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buscarButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton añadirButton;

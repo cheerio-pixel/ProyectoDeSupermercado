@@ -26,7 +26,8 @@
                               <Component id="añadirButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="editarButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="refreshButton" max="32767" attributes="0"/>
                           </Group>
                           <Component id="busquedaTextfield" alignment="0" max="32767" attributes="0"/>
                           <Component id="suplidoresCombox" alignment="0" max="32767" attributes="0"/>
@@ -59,6 +60,7 @@
                   <Component id="añadirButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="editarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="eliminarButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="refreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane3" min="-2" pref="340" max="-2" attributes="0"/>
@@ -108,11 +110,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="A&#xf1;adir"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="a&#xf1;adirButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="editarButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Editar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editarButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="eliminarButton">
       <Properties>
@@ -129,7 +137,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Suplidor&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="busquedaTextfield">
@@ -141,6 +149,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Buscar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscarButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="refreshButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Refrescar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
