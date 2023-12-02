@@ -30,6 +30,7 @@ public class DatabaseSesionUsuario implements SesionUsuario {
         }
         loggedUser = usuarioOptional.get();
         if (loggedUser.isAlreadyLogged()) {
+            loggedUser = null;
             return new Result<>(null, "Ya hay alguien en sesion con este usuario");
         } else {
             loggedUser.setAlreadyLogged(true);
