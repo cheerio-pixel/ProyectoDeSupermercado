@@ -36,6 +36,7 @@ public class CreacionProductos extends javax.swing.JPanel {
         suplidoresCombox = new javax.swing.JComboBox<>();
         busquedaTextfield = new javax.swing.JTextField();
         buscarButton = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
 
         productoRegistroTextfield.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
@@ -114,7 +115,8 @@ public class CreacionProductos extends javax.swing.JPanel {
     private javax.swing.JButton eliminarButton;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable productoRegistroTextfield;
-    private javax.swing.JComboBox<String> suplidoresCombox;
+    private javax.swing.JButton refreshButton;
+    private javax.swing.JComboBox<Suplidor> suplidoresCombox;
     // End of variables declaration//GEN-END:variables
 
 
