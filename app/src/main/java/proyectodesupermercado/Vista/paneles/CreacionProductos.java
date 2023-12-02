@@ -4,16 +4,33 @@
  */
 package proyectodesupermercado.Vista.paneles;
 
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.TableUtils;
+import proyectodesupermercado.Vista.interfaces.ControlProductoRegistro;
+import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.ProductoRegistro;
+
+import java.util.Optional;
+
 /**
  * @author IA
  */
 public class CreacionProductos extends javax.swing.JPanel {
 
+    private final ControlProductoRegistro controlProductoRegistro;
+    private ObjectTableModel<ProductoRegistro> mainModel;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton añadirButton;
+    private javax.swing.JButton editarButton;
+    private javax.swing.JTable productoRegistroTable;
+    private javax.swing.JButton removeButton;
+
     /**
      * Creates new form Creacion_De_Productos
      */
-    public CreacionProductos() {
+    public CreacionProductos(ControlProductoRegistro controlProductoRegistro) {
         initComponents();
+        this.controlProductoRegistro = controlProductoRegistro;
     }
 
     /**
@@ -26,12 +43,12 @@ public class CreacionProductos extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        productoRegistroTable = new javax.swing.JTable();
+        añadirButton = new javax.swing.JButton();
+        editarButton = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        productoRegistroTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
 
                 },
@@ -39,16 +56,26 @@ public class CreacionProductos extends javax.swing.JPanel {
                         "Producto", "Sup"
                 }
         ));
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(productoRegistroTable);
 
-        jButton1.setText("Añadir");
-
-        jButton2.setText("Editar");
-
-        jButton3.setText("Eliminar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        añadirButton.setText("Añadir");
+        añadirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                añadirButtonActionPerformed(evt);
+            }
+        });
+
+        editarButton.setText("Editar");
+        editarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarButtonActionPerformed(evt);
+            }
+        });
+
+        removeButton.setText("Eliminar");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
             }
         });
 
@@ -61,11 +88,11 @@ public class CreacionProductos extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jButton1)
+                                                .addComponent(añadirButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButton2)
+                                                .addComponent(editarButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton3)))
+                                                .addComponent(removeButton)))
                                 .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -73,24 +100,33 @@ public class CreacionProductos extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap(21, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton1)
-                                        .addComponent(jButton2)
-                                        .addComponent(jButton3))
+                                        .addComponent(añadirButton)
+                                        .addComponent(editarButton)
+                                        .addComponent(removeButton))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        int index = TableUtils.getSelectedIndex(productoRegistroTable, "Debe de seleccionar un registro de producto.");
+        if (index == -1) {
+            return;
+        }
+        Optional<String> error = controlProductoRegistro.deleteProductoRegistro(mainModel.getRow(index);
+        if (error.isPresent()) {
+            ReportInView.error(this, error.get());
+        }
+    }//GEN-LAST:event_removeButtonActionPerformed
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable2;
+
+    private void añadirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_añadirButtonActionPerformed
+
+    private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editarButtonActionPerformed
     // End of variables declaration//GEN-END:variables
 }

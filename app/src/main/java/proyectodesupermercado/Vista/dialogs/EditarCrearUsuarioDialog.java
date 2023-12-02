@@ -4,31 +4,50 @@
  */
 package proyectodesupermercado.Vista.dialogs;
 
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.interfaces.DialogSource;
+import proyectodesupermercado.controller.authentication.PasswordFactory;
+import proyectodesupermercado.controller.authentication.Rol;
+import proyectodesupermercado.modelo.Usuario;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 /**
  * @author cheerio-pixel
  */
-public class EditarCrearUsuarioDialog extends javax.swing.JDialog {
+public abstract class EditarCrearUsuarioDialog extends javax.swing.JDialog {
 
+    protected DialogSource<Usuario> source;
+    protected PasswordFactory passwordFactory;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelarButton;
     private javax.swing.JButton guardarButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField nombreTextfield;
+    private javax.swing.JLabel passwordLabel;
     private javax.swing.JPasswordField passwordTextfield;
-    private javax.swing.JComboBox<String> rolComboBox;
+    private javax.swing.JComboBox<Rol> rolComboBox;
+
     /**
      * Creates new form EditarCrearUsuarioDialog
      */
-    public EditarCrearUsuarioDialog(JComponent parent, boolean modal) {
+    public EditarCrearUsuarioDialog(JComponent parent, boolean modal,
+                                    DialogSource<Usuario> source, PasswordFactory passwordFactory) {
         super((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent), modal);
         setLocationRelativeTo(parent);
         initComponents();
+        rolComboBox.setModel(new DefaultComboBoxModel<>(Rol.values()));
+
+        this.source = source;
+        this.passwordFactory = passwordFactory;
     }
 
     /**
@@ -41,79 +60,125 @@ public class EditarCrearUsuarioDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         guardarButton = new javax.swing.JButton();
-        passwordTextfield = new javax.swing.JPasswordField();
-        jLabel1 = new javax.swing.JLabel();
         rolComboBox = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         nombreTextfield = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        cancelarButton = new javax.swing.JButton();
+        passwordTextfield = new javax.swing.JPasswordField();
+        passwordLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         guardarButton.setText("Guardar");
-
-        passwordTextfield.setColumns(9);
-
-        jLabel1.setText("Cambio de contraseña");
+        guardarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarButtonActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Rol");
 
         jLabel3.setText("Nombre");
 
-        jButton1.setText("Cancelar");
+        cancelarButton.setText("Cancelar");
+        cancelarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarButtonActionPerformed(evt);
+            }
+        });
+
+        passwordTextfield.setColumns(9);
+
+        passwordLabel.setText("Cambio de contraseña");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(87, Short.MAX_VALUE)
-                                .addComponent(guardarButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)
-                                .addGap(88, 88, 88))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(90, 90, 90)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(passwordTextfield, javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(rolComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(nombreTextfield, javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
-                                                        .addGap(46, 46, 46)))
-                                        .addContainerGap(91, Short.MAX_VALUE)))
+                                .addContainerGap(107, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(guardarButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(cancelarButton))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(passwordTextfield, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel3)
+                                                .addComponent(jLabel2)
+                                                .addComponent(nombreTextfield, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                                                .addComponent(rolComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 219, Short.MAX_VALUE)
+                                                .addComponent(passwordLabel)))
+                                .addContainerGap(107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(249, Short.MAX_VALUE)
+                                .addContainerGap(33, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nombreTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rolComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11)
+                                .addComponent(passwordLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(passwordTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton1)
+                                        .addComponent(cancelarButton)
                                         .addComponent(guardarButton))
                                 .addGap(20, 20, 20))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(19, 19, 19)
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(nombreTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rolComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(passwordTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(83, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    protected abstract void guardarButtonActionPerformed(java.awt.event.ActionEvent evt);
+
+    private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
+        close();
+    }//GEN-LAST:event_cancelarButtonActionPerformed
+
+    protected void close() {
+        setVisible(false);
+        dispose();
+    }
+
+    /**
+     * Chequea si las entradas de usuario son validas
+     *
+     * @return Verdadero si no son validas, falso de lo contrario
+     */
+    protected boolean isInvalidDataInputs() {
+        if (getNombreTextfield().getText().isBlank()) {
+            ReportInView.warning(this, "El nombre no puede estar vacio");
+            return true;
+        }
+        if (getRolComboBox().getSelectedItem() == null) {
+            ReportInView.warning(this, "Debe de seleccionar un rol");
+            return true;
+        }
+        return false;
+    }
+
+    protected JLabel getPasswordLabel() {
+        return passwordLabel;
+    }
+
+    protected JPasswordField getPasswordTextfield() {
+        return passwordTextfield;
+    }
+
+    protected JComboBox<Rol> getRolComboBox() {
+        return rolComboBox;
+    }
+
+    protected JTextField getNombreTextfield() {
+        return nombreTextfield;
+    }
     // End of variables declaration//GEN-END:variables
 }
