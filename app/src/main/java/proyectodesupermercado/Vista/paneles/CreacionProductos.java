@@ -15,16 +15,6 @@ public class CreacionProductos extends javax.swing.JPanel {
         initComponents();
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton añadirButton;
-    private javax.swing.JButton buscarButton;
-    private javax.swing.JTextField busquedaTextfield;
-    private javax.swing.JButton editarButton;
-    private javax.swing.JButton eliminarButton;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable productoRegistroTextfield;
-    private javax.swing.JComboBox<String> suplidoresCombox;
-
     private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_eliminarButtonActionPerformed
@@ -115,6 +105,16 @@ public class CreacionProductos extends javax.swing.JPanel {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton añadirButton;
+    private javax.swing.JButton buscarButton;
+    private javax.swing.JTextField busquedaTextfield;
+    private javax.swing.JButton editarButton;
+    private javax.swing.JButton eliminarButton;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable productoRegistroTextfield;
+    private javax.swing.JComboBox<String> suplidoresCombox;
     // End of variables declaration//GEN-END:variables
 
 
