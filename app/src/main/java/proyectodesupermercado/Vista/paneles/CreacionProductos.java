@@ -8,12 +8,6 @@ package proyectodesupermercado.Vista.paneles;
  * @author IA
  */
 public class CreacionProductos extends javax.swing.JPanel {
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JTable jTable2;
     /**
      * Creates new form Creacion_De_Productos
      */
@@ -91,5 +85,14 @@ public class CreacionProductos extends javax.swing.JPanel {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
+
+
 }
