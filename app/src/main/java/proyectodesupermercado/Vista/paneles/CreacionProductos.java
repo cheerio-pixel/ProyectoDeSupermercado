@@ -6,6 +6,7 @@ package proyectodesupermercado.Vista.paneles;
 
 import proyectodesupermercado.Vista.ReportInView;
 import proyectodesupermercado.Vista.TableUtils;
+import proyectodesupermercado.Vista.dialogs.EditarCrearProductoDialog;
 import proyectodesupermercado.Vista.interfaces.ControlProductoRegistro;
 import proyectodesupermercado.Vista.utils.SuplidoresListRenderer;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
@@ -13,6 +14,8 @@ import proyectodesupermercado.modelo.ProductoRegistro;
 import proyectodesupermercado.modelo.Suplidor;
 
 import javax.swing.DefaultComboBoxModel;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author IA
@@ -32,14 +35,14 @@ public class CreacionProductos extends javax.swing.JPanel {
 
     private final ControlProductoRegistro accionesProductoRegistro;
     private ObjectTableModel<ProductoRegistro> mainModel;
+    private List<Suplidor> suplidorList;
 
     public void refreshSuplidoresCombobox() {
         DefaultComboBoxModel<Suplidor> suplidor = new DefaultComboBoxModel<>(
                 new Suplidor[]{null}
         );
-        suplidor.addAll(
-                accionesProductoRegistro.supplyAllSuplidores()
-        );
+        suplidorList = accionesProductoRegistro.supplyAllSuplidores();
+        suplidor.addAll(suplidorList);
         suplidoresCombox.setModel(suplidor);
     }
 
@@ -171,11 +174,43 @@ public class CreacionProductos extends javax.swing.JPanel {
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
-        // TODO add your handling code here:
+        int index = TableUtils.getSelectedIndex(
+                productoRegistroTable, "Debe de seleccionar algun producto."
+        );
+        if (index == -1) {
+            return;
+        }
+        ProductoRegistro productoRegistro = mainModel.getRow(index);
+
+        new EditarCrearProductoDialog(
+                editarButton, true,
+                prod -> {
+                    Optional<String> error = accionesProductoRegistro.updateProductoRegistro(prod);
+                    if (error.isPresent()) {
+                        return error;
+                    }
+                    refreshTable();
+                    return error;
+                },
+                suplidorList,
+                productoRegistro
+        ).setVisible(true);
     }//GEN-LAST:event_editarButtonActionPerformed
 
     private void añadirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirButtonActionPerformed
-        // TODO add your handling code here:
+        new EditarCrearProductoDialog(
+                editarButton, true,
+                prod -> {
+                    Optional<String> error = accionesProductoRegistro.insertProductoRegistro(prod);
+                    if (error.isPresent()) {
+                        return error;
+                    }
+                    refreshTable();
+                    return error;
+                },
+                suplidorList,
+                null
+        ).setVisible(true);
     }//GEN-LAST:event_añadirButtonActionPerformed
 
     private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
