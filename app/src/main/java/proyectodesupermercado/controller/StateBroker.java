@@ -1,11 +1,11 @@
 package proyectodesupermercado.controller;
 
-import proyectodesupermercado.Vista.ContentChanger;
+import proyectodesupermercado.Vista.interfaces.ContentChanger;
 import proyectodesupermercado.Vista.interfaces.SesionUsuario;
 import proyectodesupermercado.Vista.paneles.LoginPanel;
 import proyectodesupermercado.Vista.roles.ViewCreator;
 import proyectodesupermercado.controller.authentication.Rol;
-import proyectodesupermercado.controller.authentication.Usuario;
+import proyectodesupermercado.modelo.Usuario;
 
 import javax.swing.JPanel;
 import java.util.Map;
@@ -45,7 +45,6 @@ public class StateBroker {
                 content,
                 "Cerrar sesion",
                 evt -> cerrarSesionAction.run()
-
         );
     }
 }
