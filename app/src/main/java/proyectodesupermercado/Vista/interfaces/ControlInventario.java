@@ -1,7 +1,7 @@
 package proyectodesupermercado.Vista.interfaces;
 
-import proyectodesupermercado.Vista.modelo.InventarioProducto;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.InventarioProducto;
 
 import java.util.Optional;
 

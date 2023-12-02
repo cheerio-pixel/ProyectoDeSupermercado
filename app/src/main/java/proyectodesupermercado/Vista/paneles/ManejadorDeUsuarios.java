@@ -4,16 +4,53 @@
  */
 package proyectodesupermercado.Vista.paneles;
 
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.TableUtils;
+import proyectodesupermercado.Vista.dialogs.CrearUsuarioDialog;
+import proyectodesupermercado.Vista.dialogs.EditarUsuarioDialog;
+import proyectodesupermercado.Vista.interfaces.ControlEditarCrearUsuarios;
+import proyectodesupermercado.controller.authentication.PasswordFactory;
+import proyectodesupermercado.controller.authentication.Rol;
+import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.Usuario;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * @author cheerio-pixel
  */
 public class ManejadorDeUsuarios extends javax.swing.JPanel {
 
+
+    private ObjectTableModel<Usuario> mainModel;
+    private final ControlEditarCrearUsuarios accionesUsuarios;
+    private final PasswordFactory passwordFactory;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton busquedaButton;
+    private javax.swing.JTextField busquedaTextfield;
+    private javax.swing.JButton editButton;
+    private javax.swing.JButton eliminarButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton nuevoButton;
+    private javax.swing.JComboBox<Rol> rolCombox;
+    private javax.swing.JCheckBox sesionActivaCheckbox;
+
     /**
      * Creates new form ManejadorDeUsuarios
      */
-    public ManejadorDeUsuarios() {
+    public ManejadorDeUsuarios(ControlEditarCrearUsuarios accionesUsuarios, PasswordFactory passwordFactory) {
         initComponents();
+        this.accionesUsuarios = accionesUsuarios;
+        this.passwordFactory = passwordFactory;
+
+        DefaultComboBoxModel<Rol> comboBoxModel = new DefaultComboBoxModel<>(new Rol[]{null});
+        comboBoxModel.addAll(List.of(Rol.values()));
+        rolCombox.setModel(comboBoxModel);
+
+        refreshTable();
     }
 
     /**
@@ -25,28 +62,30 @@ public class ManejadorDeUsuarios extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        passwordTextfield = new javax.swing.JPasswordField();
-        jLabel1 = new javax.swing.JLabel();
-        rolComboBox = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        nombreTextfield = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        guardarButton = new javax.swing.JButton();
+        nuevoButton = new javax.swing.JButton();
         refrescarButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         usuarioTabla = new javax.swing.JTable();
+        busquedaTextfield = new javax.swing.JTextField();
+        busquedaButton = new javax.swing.JButton();
+        rolCombox = new javax.swing.JComboBox<>();
+        editButton = new javax.swing.JButton();
+        eliminarButton = new javax.swing.JButton();
+        sesionActivaCheckbox = new javax.swing.JCheckBox();
 
-        passwordTextfield.setColumns(9);
-
-        jLabel1.setText("Cambio de contraseña");
-
-        jLabel2.setText("Rol");
-
-        jLabel3.setText("Nombre");
-
-        guardarButton.setText("Guardar");
+        nuevoButton.setText("Nuevo");
+        nuevoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevoButtonActionPerformed(evt);
+            }
+        });
 
         refrescarButton.setText("Refrescar");
+        refrescarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refrescarButtonActionPerformed(evt);
+            }
+        });
 
         usuarioTabla.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
@@ -69,63 +108,158 @@ public class ManejadorDeUsuarios extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(usuarioTabla);
 
+        busquedaTextfield.setColumns(9);
+
+        busquedaButton.setText("Buscar");
+        busquedaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                busquedaButtonActionPerformed(evt);
+            }
+        });
+
+        editButton.setText("Editar");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+
+        eliminarButton.setText("Eliminar");
+        eliminarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarButtonActionPerformed(evt);
+            }
+        });
+
+        sesionActivaCheckbox.setText("Sesion activa");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel3)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(sesionActivaCheckbox)
+                                                .addGap(15, 15, 15)
+                                                .addComponent(rolCombox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(guardarButton)
+                                                .addComponent(busquedaTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(busquedaButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(refrescarButton))
-                                        .addComponent(passwordTextfield)
-                                        .addComponent(rolComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(nombreTextfield))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(nuevoButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(editButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(eliminarButton))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel3)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(nombreTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(rolComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(passwordTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(33, 33, 33)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(guardarButton)
-                                                        .addComponent(refrescarButton))))
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(busquedaTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(busquedaButton)
+                                        .addComponent(refrescarButton))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(rolCombox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(sesionActivaCheckbox))
+                                .addGap(14, 14, 14)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(nuevoButton)
+                                        .addComponent(editButton)
+                                        .addComponent(eliminarButton))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton guardarButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField nombreTextfield;
-    private javax.swing.JPasswordField passwordTextfield;
+    private void refreshTable() {
+        // Hard to read code (TM)
+        usuarioTabla.setModel(mainModel = accionesUsuarios.refresh());
+    }
+
+    private void refreshTable(ObjectTableModel<Usuario> model) {
+        usuarioTabla.setModel(mainModel = model);
+    }
+
+    private ObjectTableModel<Usuario> doSearch() {
+        return accionesUsuarios.search(
+                busquedaTextfield.getText(),
+                sesionActivaCheckbox.isSelected(),
+                ((Rol) rolCombox.getSelectedItem())
+        );
+    }
+
+    private void nuevoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoButtonActionPerformed
+        new CrearUsuarioDialog(
+                this, true,
+                user -> {
+                    Optional<String> result = accionesUsuarios.createUser(user);
+                    if (result.isPresent()) {
+                        return result;
+                    }
+                    refreshTable();
+                    return result;
+                },
+                passwordFactory
+        ).setVisible(true);
+    }//GEN-LAST:event_nuevoButtonActionPerformed
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        int index = TableUtils.getSelectedIndex(usuarioTabla, "Debe de seleccionar algun usuario en la tabla.");
+        if (index == -1) {
+            return;
+        }
+        new EditarUsuarioDialog(
+                this, true,
+                user -> {
+                    Optional<String> result = accionesUsuarios.updateUser(user);
+                    if (result.isPresent()) {
+                        return result;
+                    }
+                    refreshTable();
+                    return result;
+                },
+                passwordFactory,
+                mainModel.getRow(index).clone()
+        ).setVisible(true);
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
+        int index = TableUtils.getSelectedIndex(usuarioTabla, "Debe de seleccionar algun usuario en la tabla.");
+        if (index == -1) {
+            return;
+        }
+        Usuario row = mainModel.getRow(index);
+        if (JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(
+                usuarioTabla, "¿Deseas borrar este usuario: "
+                        + row.getNombre() + "?", "", JOptionPane.YES_NO_OPTION)) {
+            return;
+        }
+        accionesUsuarios.deleteUser(row)
+                .ifPresentOrElse(m -> ReportInView.error(this, m),
+                        () -> refreshTable(doSearch()));
+    }//GEN-LAST:event_eliminarButtonActionPerformed
     private javax.swing.JButton refrescarButton;
-    private javax.swing.JComboBox<String> rolComboBox;
+
+    private void busquedaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaButtonActionPerformed
+        refreshTable(doSearch());
+    }//GEN-LAST:event_busquedaButtonActionPerformed
+
+    private void refrescarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescarButtonActionPerformed
+        busquedaTextfield.setText("");
+        rolCombox.setSelectedItem(null);
+        refreshTable();
+    }//GEN-LAST:event_refrescarButtonActionPerformed
     private javax.swing.JTable usuarioTabla;
     // End of variables declaration//GEN-END:variables
 }

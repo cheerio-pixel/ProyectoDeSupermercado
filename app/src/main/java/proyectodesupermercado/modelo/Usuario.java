@@ -1,20 +1,25 @@
-package proyectodesupermercado.controller.authentication;
+package proyectodesupermercado.modelo;
 
+import proyectodesupermercado.controller.authentication.Password;
+import proyectodesupermercado.controller.authentication.Rol;
 import proyectodesupermercado.lib.databaseUtils.annotations.Column;
 import proyectodesupermercado.lib.databaseUtils.annotations.ManyToOne;
 import proyectodesupermercado.lib.databaseUtils.annotations.Table;
+import proyectodesupermercado.lib.tableModel.TableModelColumn;
 
 @Table
-public class Usuario {
+public class Usuario implements Cloneable {
     private long id;
+    @TableModelColumn(name = "Nombre", index = 1)
     private String nombre;
     @Column(name = "contraseña", isJavaObject = true)
     private Password password;
+    @TableModelColumn(name = "Sesion Activa", index = 3)
     @Column(name = "sesionActiva")
     private boolean alreadyLogged;
+    @TableModelColumn(name = "Rol", index = 2)
     @ManyToOne(joinColumn = "rolId")
     private Rol rol;
-
     public Usuario() {
     }
 
@@ -54,5 +59,26 @@ public class Usuario {
 
     public boolean checkPassword(char[] password) {
         return this.password.checkPassword(password);
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public void setPassword(Password password) {
+        this.password = password;
+    }
+
+    @Override
+    public Usuario clone() {
+        try {
+            return (Usuario) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

@@ -4,6 +4,8 @@
  */
 package proyectodesupermercado.Vista;
 
+import proyectodesupermercado.Vista.interfaces.ContentChanger;
+
 import javax.swing.JPanel;
 import java.awt.event.ActionListener;
 

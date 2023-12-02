@@ -1,9 +1,8 @@
 package proyectodesupermercado.controller;
 
 import proyectodesupermercado.Vista.interfaces.SesionUsuario;
-import proyectodesupermercado.controller.authentication.Usuario;
 import proyectodesupermercado.controller.dao.UsuarioDAO;
-import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
+import proyectodesupermercado.modelo.Usuario;
 
 import java.util.Optional;
 
@@ -12,9 +11,9 @@ public class DatabaseSesionUsuario implements SesionUsuario {
     private final StateBroker stateBroker;
     private Usuario loggedUser;
 
-    public DatabaseSesionUsuario(DatabaseEnvironment dbEnv, StateBroker stateBroker) {
+    public DatabaseSesionUsuario(UsuarioDAO usuarioDAO, StateBroker stateBroker) {
         this.stateBroker = stateBroker;
-        usuarioDAO = new UsuarioDAO(dbEnv);
+        this.usuarioDAO = usuarioDAO;
     }
 
     @Override
@@ -31,6 +30,7 @@ public class DatabaseSesionUsuario implements SesionUsuario {
         }
         loggedUser = usuarioOptional.get();
         if (loggedUser.isAlreadyLogged()) {
+            loggedUser = null;
             return new Result<>(null, "Ya hay alguien en sesion con este usuario");
         } else {
             loggedUser.setAlreadyLogged(true);

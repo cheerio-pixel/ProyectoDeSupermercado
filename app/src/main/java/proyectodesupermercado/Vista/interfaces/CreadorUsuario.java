@@ -5,7 +5,7 @@
 package proyectodesupermercado.Vista.interfaces;
 
 import proyectodesupermercado.controller.Result;
-import proyectodesupermercado.controller.authentication.Usuario;
+import proyectodesupermercado.modelo.Usuario;
 
 /**
  *

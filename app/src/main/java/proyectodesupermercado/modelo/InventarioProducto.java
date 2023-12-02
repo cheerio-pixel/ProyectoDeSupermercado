@@ -1,16 +1,16 @@
-package proyectodesupermercado.Vista.modelo;
+package proyectodesupermercado.modelo;
 
 
-import proyectodesupermercado.lib.tableModel.Column;
+import proyectodesupermercado.lib.tableModel.TableModelColumn;
 
 /**
  *
  */
 public class InventarioProducto {
     private final long id;
-    @Column(name = "Nombre", index = 1)
+    @TableModelColumn(name = "Nombre", index = 1)
     private final String nombre;
-    @Column(name = "Cantidad", index = 2)
+    @TableModelColumn(name = "Cantidad", index = 2)
     private int cantidad;
 
     public InventarioProducto(long id, String nombre, int cantidad) {
