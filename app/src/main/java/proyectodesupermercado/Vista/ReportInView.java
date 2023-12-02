@@ -35,4 +35,17 @@ public final class ReportInView {
                 JOptionPane.INFORMATION_MESSAGE
         );
     }
+
+    /**
+     * Show a confirmation dialog
+     *
+     * @param parent Parent component for dialog
+     * @param msg    Message to show to the user, could be a string or panel
+     * @return True for YES, false for NO
+     */
+    public static boolean confirmYesOrNo(Component parent, Object msg) {
+        return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
+                parent, msg, "", JOptionPane.YES_NO_OPTION
+        );
+    }
 }
