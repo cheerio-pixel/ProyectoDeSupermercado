@@ -6,8 +6,8 @@ package proyectodesupermercado.Vista.paneles;
 
 import proyectodesupermercado.Vista.TableUtils;
 import proyectodesupermercado.Vista.interfaces.ControlInventario;
-import proyectodesupermercado.Vista.modelo.InventarioProducto;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.InventarioProducto;
 
 import javax.swing.JOptionPane;
 import java.util.Optional;
