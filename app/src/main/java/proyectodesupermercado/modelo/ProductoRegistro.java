@@ -16,17 +16,35 @@ import proyectodesupermercado.lib.databaseUtils.annotations.Table;
 public class ProductoRegistro {
     @Id
     private long id;
-    private String nombre;
+    private final String nombre;
     @ManyToOne(joinColumn = "idSuplidor")
-    private Suplidor suplidor;
+    private final Suplidor suplidor;
     @Column(name = "precioPorUnidad")
-    private double precioDeVenta;
+    private final double precioDeVenta;
 
-    public ProductoRegistro() {
+    public ProductoRegistro(String nombre, Suplidor suplidor, double precioDeVenta) {
+        this.nombre = nombre;
+        this.suplidor = suplidor;
+        this.precioDeVenta = precioDeVenta;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getNombre() {
         return nombre;
+    }
+
+    public Suplidor getSuplidor() {
+        return suplidor;
+    }
+
+    public double getPrecioDeVenta() {
+        return precioDeVenta;
     }
 }
