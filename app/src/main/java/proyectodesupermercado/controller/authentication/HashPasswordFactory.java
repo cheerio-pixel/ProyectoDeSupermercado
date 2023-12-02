@@ -14,9 +14,10 @@ public abstract class HashPasswordFactory implements PasswordFactory {
     protected abstract Hasher getHasher();
 
     public static class PBKDF2HashPasswordFactory extends HashPasswordFactory {
+        private static final Hasher hasher = new PBKDF2Hasher();
         @Override
         protected Hasher getHasher() {
-            return new PBKDF2Hasher();
+            return hasher;
         }
     }
 }
