@@ -7,14 +7,12 @@ package proyectodesupermercado.Vista.paneles;
 import proyectodesupermercado.Vista.ReportInView;
 import proyectodesupermercado.Vista.TableUtils;
 import proyectodesupermercado.Vista.interfaces.ControlProductoRegistro;
+import proyectodesupermercado.Vista.utils.SuplidoresListRenderer;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
 import proyectodesupermercado.modelo.ProductoRegistro;
 import proyectodesupermercado.modelo.Suplidor;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList;
-import java.awt.Component;
 
 /**
  * @author IA
@@ -26,18 +24,7 @@ public class CreacionProductos extends javax.swing.JPanel {
     public CreacionProductos(ControlProductoRegistro accionesProductoRegistro) {
         initComponents();
         this.accionesProductoRegistro = accionesProductoRegistro;
-        suplidoresCombox.setRenderer(
-                new DefaultListCellRenderer() {
-                    @Override
-                    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                        Object res = value;
-                        if (value != null) {
-                            res = ((Suplidor) value).getNombre();
-                        }
-                        return super.getListCellRendererComponent(list, res, index, isSelected, cellHasFocus);
-                    }
-                }
-        );
+        suplidoresCombox.setRenderer(new SuplidoresListRenderer());
 
         refreshTable();
         refreshSuplidoresCombobox();
