@@ -2,6 +2,7 @@ package proyectodesupermercado.controller.dao;
 
 import proyectodesupermercado.Vista.modelo.InventarioProducto;
 import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
+import proyectodesupermercado.modelo.InventarioProducto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
