@@ -1,10 +1,9 @@
 package proyectodesupermercado.controller;
 
 import proyectodesupermercado.Vista.interfaces.ControlInventario;
-import proyectodesupermercado.Vista.modelo.InventarioProducto;
 import proyectodesupermercado.controller.dao.InventarioProductoDAO;
-import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.InventarioProducto;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -13,8 +12,8 @@ import java.util.stream.Collectors;
 public class DatabaseControlInventario implements ControlInventario {
     private final InventarioProductoDAO inventarioProductoDAO;
 
-    public DatabaseControlInventario(DatabaseEnvironment dbEnv) {
-        this.inventarioProductoDAO = new InventarioProductoDAO(dbEnv);
+    public DatabaseControlInventario(InventarioProductoDAO inventarioProductoDAO) {
+        this.inventarioProductoDAO = inventarioProductoDAO;
     }
 
     @Override
