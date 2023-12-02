@@ -86,7 +86,7 @@ public class ObjectTableModel<T> extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return columns.get(columnIndex).getType();
+        return TypeUtils.getClass(columns.get(columnIndex).getType());
     }
 
     @Override
