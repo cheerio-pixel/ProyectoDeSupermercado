@@ -114,7 +114,7 @@ public class CreacionProductos extends javax.swing.JPanel {
         if (index == -1) {
             return;
         }
-        Optional<String> error = controlProductoRegistro.deleteProductoRegistro(mainModel.getRow(index);
+        Optional<String> error = controlProductoRegistro.deleteProductoRegistro(mainModel.getRow(index));
         if (error.isPresent()) {
             ReportInView.error(this, error.get());
         }
