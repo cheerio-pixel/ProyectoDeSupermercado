@@ -7,6 +7,8 @@ package proyectodesupermercado.modelo;
 import proyectodesupermercado.lib.databaseUtils.annotations.Id;
 import proyectodesupermercado.lib.databaseUtils.annotations.Table;
 
+import java.util.Objects;
+
 /**
  * @author cheerio-pixel
  */
@@ -27,5 +29,18 @@ public class Suplidor {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Suplidor suplidor = (Suplidor) object;
+        return id == suplidor.id && Objects.equals(nombre, suplidor.nombre) && Objects.equals(direccion, suplidor.direccion) && Objects.equals(telefono, suplidor.telefono);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, direccion, telefono);
     }
 }
