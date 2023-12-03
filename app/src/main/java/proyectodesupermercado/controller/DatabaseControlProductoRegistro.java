@@ -26,7 +26,10 @@ public class DatabaseControlProductoRegistro implements ControlProductoRegistro 
     public ObjectTableModel<ProductoRegistro> refresh() {
         return new ObjectTableModel<>(
                 ProductoRegistro.class,
-                new ArrayList<>(productoRegistroDAO.listAll())
+                productoRegistroDAO.listAll()
+                        .stream()
+                        .sorted(Comparator.comparing(ProductoRegistro::getNombre))
+                        .collect(Collectors.toList())
         );
     }
 
@@ -42,6 +45,9 @@ public class DatabaseControlProductoRegistro implements ControlProductoRegistro 
         return new ObjectTableModel<>(
                 ProductoRegistro.class,
                 productoRegistroDAO.searchByFields(nombre, suplidor)
+                        .stream()
+                        .sorted(Comparator.comparing(ProductoRegistro::getNombre))
+                        .collect(Collectors.toList())
         );
     }
 
