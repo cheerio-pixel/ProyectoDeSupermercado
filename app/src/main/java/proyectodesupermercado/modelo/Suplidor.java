@@ -7,8 +7,6 @@ package proyectodesupermercado.modelo;
 import proyectodesupermercado.lib.databaseUtils.annotations.Id;
 import proyectodesupermercado.lib.databaseUtils.annotations.Table;
 
-import java.util.List;
-
 /**
  * @author cheerio-pixel
  */
@@ -18,7 +16,7 @@ public class Suplidor {
     private long id;
     private String nombre;
     private String direccion;
-    private List<String> telefonos;
+    private String telefono;
 
     public String getNombre() {
         return nombre;
