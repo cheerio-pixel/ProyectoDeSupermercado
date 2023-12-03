@@ -8,6 +8,7 @@ import proyectodesupermercado.lib.databaseUtils.annotations.Column;
 import proyectodesupermercado.lib.databaseUtils.annotations.Id;
 import proyectodesupermercado.lib.databaseUtils.annotations.ManyToOne;
 import proyectodesupermercado.lib.databaseUtils.annotations.Table;
+import proyectodesupermercado.lib.tableModel.TableModelColumn;
 
 /**
  * @author cheerio-pixel
@@ -16,10 +17,12 @@ import proyectodesupermercado.lib.databaseUtils.annotations.Table;
 public class ProductoRegistro {
     @Id
     private long id;
+    @TableModelColumn(name = "Nombre", index = 1)
     private String nombre;
     @ManyToOne(joinColumn = "idSuplidor")
     private Suplidor suplidor;
     @Column(name = "precioPorUnidad")
+    @TableModelColumn(name = "Precio por unidad", index = 1)
     private double precioDeVenta;
 
     public ProductoRegistro() {
