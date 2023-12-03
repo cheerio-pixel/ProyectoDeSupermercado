@@ -1,4 +1,4 @@
-package proyectodesupermercado.controller.dao;
+package proyectodesupermercado.controller;
 
 import proyectodesupermercado.Vista.interfaces.ControlProductoRegistro;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
