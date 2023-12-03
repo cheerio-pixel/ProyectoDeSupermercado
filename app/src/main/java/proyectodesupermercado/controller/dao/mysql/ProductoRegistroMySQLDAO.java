@@ -70,19 +70,40 @@ public class ProductoRegistroMySQLDAO implements ProductoRegistroDAO {
     @Override
     public void insert(ProductoRegistro object) {
         String query = "INSERT INTO ProductoRegistro(id, idSuplidor, nombre, precioPorUnidad) VALUES (?, ?, ?, ?)";
-        try (Connection conn = dbEnv.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query)) {
-            statement.setLong(1, DatabaseUtil.getLastInsertId(statement, "ProductoRegistro") + 1);
-            long idSuplidor = object.getSuplidorId();
-            if (idSuplidor == -1) {
-                statement.setObject(2, null);
-            } else {
-                statement.setLong(2, idSuplidor);
-            }
-            statement.setString(3, object.getNombre());
-            statement.setDouble(4, object.getPrecioDeVenta());
+        String queryInventario = "INSERT INTO InventarioProducto(id, idProductoRegistro, cantidad) " +
+                "VALUES (?, ?, ?)";
+        try (Connection conn = dbEnv.getConnection()) {
+            try (PreparedStatement statement = conn.prepareStatement(query);
+                 PreparedStatement statementInventario = conn.prepareStatement(queryInventario)) {
+                conn.setAutoCommit(false);
 
-            statement.executeUpdate();
+                long productoRegistroId = DatabaseUtil.getLastInsertId(statement, "ProductoRegistro") + 1;
+                statement.setLong(1, productoRegistroId);
+                long idSuplidor = object.getSuplidorId();
+                if (idSuplidor == -1) {
+                    statement.setObject(2, null);
+                } else {
+                    statement.setLong(2, idSuplidor);
+                }
+                statement.setString(3, object.getNombre());
+                statement.setDouble(4, object.getPrecioDeVenta());
+
+                statement.executeUpdate();
+
+                statementInventario.setLong(
+                        1,
+                        DatabaseUtil.getLastInsertId(statementInventario, "InventarioProducto")
+                                + 1
+                );
+                statementInventario.setObject(2, productoRegistroId);
+                statementInventario.setInt(3, -1);
+                statementInventario.executeUpdate();
+
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
