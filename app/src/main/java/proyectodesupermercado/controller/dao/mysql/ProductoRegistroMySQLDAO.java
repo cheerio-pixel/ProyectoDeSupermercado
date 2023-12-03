@@ -159,7 +159,7 @@ public class ProductoRegistroMySQLDAO implements ProductoRegistroDAO {
                 "SELECT * FROM ProductoRegistro " +
                         "LEFT JOIN Suplidor " +
                         "ON Suplidor.id = ProductoRegistro.idSuplidor "
-        ).addConditionIf(nombre != null,
+        ).addConditionIf(nombre != null && !nombre.isBlank(),
                 "SOUNDEX(ProductoRegistro.nombre) LIKE " +
                         "CONCAT('%', SOUNDEX(?), '%') " +
                         "OR ProductoRegistro.nombre LIKE " +
