@@ -21,7 +21,7 @@ public class ProductoRegistro {
     private final Suplidor suplidor;
     @Column(name = "precioPorUnidad")
     private final double precioDeVenta;
-
+    private boolean enInventario;
     public ProductoRegistro(String nombre, Suplidor suplidor, double precioDeVenta) {
         this.nombre = nombre;
         this.suplidor = suplidor;
