@@ -27,7 +27,7 @@ public class DatabaseControlProductoRegistro implements ControlProductoRegistro 
         return new ObjectTableModel<>(
                 ProductoRegistro.class,
                 new ArrayList<>(productoRegistroDAO.listAll())
-        )
+        );
     }
 
     @Override
