@@ -19,16 +19,6 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
 
     private final ControlInventario controlInventario;
     private ObjectTableModel<InventarioProducto> currentModel;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buscarButton;
-    private javax.swing.JTextField busquedaTextfield;
-    private javax.swing.JSpinner cantidadProductoSpinner;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable mainTable;
-    private javax.swing.JTextField nombreTextfield;
-    private javax.swing.JButton saveButton;
     /**
      * Creates new form Manejo_de_inventario
      */
@@ -140,7 +130,7 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
                                                 .addComponent(cantidadProductoSpinner)
                                                 .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 14, Short.MAX_VALUE))
+                                .addGap(14, 14, 14))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,5 +200,16 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
     private void busquedaTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaTextfieldActionPerformed
         doSearch();
     }//GEN-LAST:event_busquedaTextfieldActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buscarButton;
+    private javax.swing.JTextField busquedaTextfield;
+    private javax.swing.JSpinner cantidadProductoSpinner;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable mainTable;
+    private javax.swing.JTextField nombreTextfield;
+    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }
