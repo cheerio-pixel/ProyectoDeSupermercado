@@ -1,5 +1,6 @@
 package proyectodesupermercado.controller.dao.mysql;
 
+import proyectodesupermercado.controller.ConditionsBuilder;
 import proyectodesupermercado.controller.authentication.Rol;
 import proyectodesupermercado.controller.dao.DatabaseUtil;
 import proyectodesupermercado.controller.dao.UsuarioDAO;
@@ -13,11 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -32,7 +30,7 @@ public class UsuarioMySQLDAO implements UsuarioDAO {
 
     @Override
     public Set<Usuario> listAll() {
-        String query = "SELECT * FROM Usuario INNER JOIN Rol ON Rol.id = Usuario.rolId ORDER BY Usuario.nombre";
+        String query = "SELECT * FROM Usuario INNER JOIN Rol ON Rol.id = Usuario.rolId";
         try (Connection conn = dbEnv.getConnection();
              Statement statement = conn.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
@@ -117,32 +115,27 @@ public class UsuarioMySQLDAO implements UsuarioDAO {
     public List<Usuario> listByFields(Rol rol,
                                       String nombre,
                                       Boolean isLogged) {
-        String query = "SELECT * FROM Usuario INNER JOIN Rol ON Usuario.rolId = Rol.id ";
-        Map<String, Object> conditions = new LinkedHashMap<>();
-        if (rol != null) {
-            conditions.put("Usuario.rolId = ?", rol.getId());
-        }
-        if (nombre != null) {
-            conditions.put("SOUNDEX(Usuario.nombre) LIKE CONCAT(SOUNDEX(?), '%')", nombre);
-        }
-        if (isLogged != null) {
-            conditions.put("Usuario.sesionActiva = ?", isLogged);
-        }
-        if (!conditions.isEmpty()) {
-            query += " WHERE " + String.join(" AND ", conditions.keySet());
-        }
+        ConditionsBuilder builder = new ConditionsBuilder(
+                "SELECT * FROM Usuario INNER JOIN Rol ON Usuario.rolId = Rol.id "
+        ).addConditionIf(rol != null,
+                "Usuario.rolId = ?",
+                rol != null ? rol.getId() : null
+        ).addConditionIf((nombre != null) && !nombre.isBlank(),
+                "SOUNDEX(Usuario.nombre) LIKE CONCAT(SOUNDEX(?), '%') " +
+                        "OR Usuario.nombre LIKE CONCAT('%', ?, '%')",
+                nombre, nombre
+        ).addConditionIf(isLogged != null,
+                "Usuario.sesionActiva = ?",
+                isLogged
+        ).setAtLast(" LIMIT 50");
+
         try (Connection conn = dbEnv.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query +
-                     ((nombre != null) ? " OR Usuario.nombre LIKE CONCAT('%', ?, '%')" : "")
-                     + " ORDER BY Usuario.nombre LIMIT 50")) {
-            Collection<Object> values = conditions.values();
+             PreparedStatement statement = conn.prepareStatement(
+                     builder.commitConditions(" AND "))) {
             int i = 1;
-            for (Object value : conditions.values()) {
-                statement.setObject(i, value);
+            for (Object param : builder.getParams()) {
+                statement.setObject(i, param);
                 i++;
-            }
-            if (nombre != null) {
-                statement.setObject(i, nombre);
             }
             ResultSet rs = statement.executeQuery();
             List<Usuario> res = new ArrayList<>(50);
