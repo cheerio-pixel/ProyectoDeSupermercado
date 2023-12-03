@@ -23,4 +23,8 @@ public class Suplidor {
     public String getNombre() {
         return nombre;
     }
+
+    public long getId() {
+        return id;
+    }
 }
