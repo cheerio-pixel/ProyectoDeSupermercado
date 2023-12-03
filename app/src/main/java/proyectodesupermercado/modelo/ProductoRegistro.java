@@ -10,6 +10,8 @@ import proyectodesupermercado.lib.databaseUtils.annotations.ManyToOne;
 import proyectodesupermercado.lib.databaseUtils.annotations.Table;
 import proyectodesupermercado.lib.tableModel.TableModelColumn;
 
+import java.util.Objects;
+
 /**
  * @author cheerio-pixel
  */
@@ -58,5 +60,19 @@ public class ProductoRegistro {
 
     public double getPrecioDeVenta() {
         return precioDeVenta;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        ProductoRegistro that = (ProductoRegistro) object;
+        return id == that.id
+                && Double.compare(precioDeVenta, that.precioDeVenta) == 0 && Objects.equals(nombre, that.nombre) && Objects.equals(suplidor, that.suplidor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, suplidor, precioDeVenta);
     }
 }
