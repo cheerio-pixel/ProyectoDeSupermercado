@@ -18,6 +18,9 @@ public class Suplidor {
     private String direccion;
     private String telefono;
 
+    private Suplidor() {
+    }
+
     public String getNombre() {
         return nombre;
     }
