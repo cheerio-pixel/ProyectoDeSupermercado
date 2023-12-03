@@ -44,6 +44,13 @@ public class ProductoRegistro {
         return suplidor;
     }
 
+    public long getSuplidorId() {
+        if (suplidor == null) {
+            return -1;
+        }
+        return suplidor.getId();
+    }
+
     public double getPrecioDeVenta() {
         return precioDeVenta;
     }
