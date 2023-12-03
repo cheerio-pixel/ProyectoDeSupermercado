@@ -80,9 +80,12 @@ public class TableMapper<T> {
                         // If id is not specified, then this as good as null
                         fieldValue = new TableMapper<>(colToFieldEntry.getValue().getType())
                                 .mapResultSetToObject(resultSet);
-                        if (getIdObject(fieldValue) == null) {
+
+                        if (fieldValue != null && getIdObject(fieldValue) == null) {
                             // Can't simply assign null
-                            fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
+                            // Ummm, no, this is *always* going to be null
+                            // fieldValue = TypeUtils.getDefaultValue(colToFieldEntry.getValue().getType());
+                            fieldValue = null;
                         }
                     }
                 } else if (isThere(resultSet, (fullyQuallifiedColumnName = (useFullyQuallifiedNames ? tableName + "." : "") + colToFieldEntry.getKey()))) {
@@ -93,6 +96,16 @@ public class TableMapper<T> {
                     } else {
                         fieldValue = resultSet.getObject(fullyQuallifiedColumnName);
                     }
+                }
+                // If the current field is an identity and it's value is null
+                // Then the object
+                // This Fixes OUTER JOINs, let's see how much it stands
+                if (colToFieldEntry.getValue().isAnnotationPresent(Id.class)
+                        && fieldValue == null) {
+                    // Why null and not prototype? No value has null id,
+                    // So this will fail with null pointer exception instead
+                    // of unspecified behaviour of default id object (0 in case of integrals)
+                    return null;
                 }
                 colToFieldEntry.getValue().set(prototype, fieldValue);
             } catch (SQLException e) {

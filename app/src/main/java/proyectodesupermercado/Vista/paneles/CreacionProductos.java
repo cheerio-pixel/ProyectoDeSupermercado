@@ -4,21 +4,54 @@
  */
 package proyectodesupermercado.Vista.paneles;
 
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.TableUtils;
+import proyectodesupermercado.Vista.dialogs.EditarCrearProductoDialog;
+import proyectodesupermercado.Vista.interfaces.ControlProductoRegistro;
+import proyectodesupermercado.Vista.utils.SuplidoresListRenderer;
+import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.ProductoRegistro;
+import proyectodesupermercado.modelo.Suplidor;
+
+import javax.swing.DefaultComboBoxModel;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * @author IA
  */
 public class CreacionProductos extends javax.swing.JPanel {
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JTable jTable2;
     /**
      * Creates new form Creacion_De_Productos
      */
-    public CreacionProductos() {
+    public CreacionProductos(ControlProductoRegistro accionesProductoRegistro) {
         initComponents();
+        this.accionesProductoRegistro = accionesProductoRegistro;
+        suplidoresCombox.setRenderer(new SuplidoresListRenderer());
+
+        refreshTable();
+        refreshSuplidoresCombobox();
+    }
+
+    private final ControlProductoRegistro accionesProductoRegistro;
+    private ObjectTableModel<ProductoRegistro> mainModel;
+    private List<Suplidor> suplidorList;
+
+    public void refreshSuplidoresCombobox() {
+        DefaultComboBoxModel<Suplidor> suplidor = new DefaultComboBoxModel<>(
+                new Suplidor[]{null}
+        );
+        suplidorList = accionesProductoRegistro.supplyAllSuplidores();
+        suplidor.addAll(suplidorList);
+        suplidoresCombox.setModel(suplidor);
+    }
+
+    public void refreshTable() {
+        refreshTable(accionesProductoRegistro.refresh());
+    }
+
+    public void refreshTable(ObjectTableModel<ProductoRegistro> model) {
+        productoRegistroTable.setModel(mainModel = model);
     }
 
     /**
@@ -31,12 +64,16 @@ public class CreacionProductos extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        productoRegistroTable = new javax.swing.JTable();
+        añadirButton = new javax.swing.JButton();
+        editarButton = new javax.swing.JButton();
+        eliminarButton = new javax.swing.JButton();
+        suplidoresCombox = new javax.swing.JComboBox<>();
+        busquedaTextfield = new javax.swing.JTextField();
+        buscarButton = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        productoRegistroTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
 
                 },
@@ -44,16 +81,42 @@ public class CreacionProductos extends javax.swing.JPanel {
                         "Producto", "Sup"
                 }
         ));
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(productoRegistroTable);
 
-        jButton1.setText("Añadir");
-
-        jButton2.setText("Editar");
-
-        jButton3.setText("Eliminar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        añadirButton.setText("Añadir");
+        añadirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                añadirButtonActionPerformed(evt);
+            }
+        });
+
+        editarButton.setText("Editar");
+        editarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarButtonActionPerformed(evt);
+            }
+        });
+
+        eliminarButton.setText("Eliminar");
+        eliminarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarButtonActionPerformed(evt);
+            }
+        });
+
+        busquedaTextfield.setColumns(9);
+
+        buscarButton.setText("Buscar");
+        buscarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarButtonActionPerformed(evt);
+            }
+        });
+
+        refreshButton.setText("Refrescar");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
             }
         });
 
@@ -62,34 +125,128 @@ public class CreacionProductos extends javax.swing.JPanel {
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addContainerGap(21, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jButton1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButton2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton3)))
-                                .addContainerGap(21, Short.MAX_VALUE))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(añadirButton)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(editarButton)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(refreshButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addComponent(busquedaTextfield)
+                                                        .addComponent(suplidoresCombox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGap(12, 12, 12)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(eliminarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(buscarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(21, Short.MAX_VALUE)
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(busquedaTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(suplidoresCombox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(buscarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton1)
-                                        .addComponent(jButton2)
-                                        .addComponent(jButton3))
+                                        .addComponent(añadirButton)
+                                        .addComponent(editarButton)
+                                        .addComponent(eliminarButton)
+                                        .addComponent(refreshButton))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(21, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-    private javax.swing.JScrollPane jScrollPane3;
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        // Considering it
+        // Let's make this button also refresh the list of Supliers while at it
+        refreshTable();
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
+        int index = TableUtils.getSelectedIndex(
+                productoRegistroTable, "Debe de seleccionar algun producto."
+        );
+        if (index == -1) {
+            return;
+        }
+        ProductoRegistro productoRegistro = mainModel.getRow(index);
+
+        new EditarCrearProductoDialog(
+                editarButton, true,
+                prod -> {
+                    Optional<String> error = accionesProductoRegistro.updateProductoRegistro(prod);
+                    if (error.isPresent()) {
+                        return error;
+                    }
+                    refreshTable();
+                    return error;
+                },
+                suplidorList,
+                productoRegistro
+        ).setVisible(true);
+    }//GEN-LAST:event_editarButtonActionPerformed
+
+    private void añadirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_añadirButtonActionPerformed
+        new EditarCrearProductoDialog(
+                editarButton, true,
+                prod -> {
+                    Optional<String> error = accionesProductoRegistro.insertProductoRegistro(prod);
+                    if (error.isPresent()) {
+                        return error;
+                    }
+                    refreshTable();
+                    return error;
+                },
+                suplidorList,
+                null
+        ).setVisible(true);
+    }//GEN-LAST:event_añadirButtonActionPerformed
+
+    private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
+        refreshTable(
+                accionesProductoRegistro.search(
+                        busquedaTextfield.getText(),
+                        ((Suplidor) suplidoresCombox.getSelectedItem())
+                ));
+    }//GEN-LAST:event_buscarButtonActionPerformed
+
+    private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
+        int index = TableUtils.getSelectedIndex(productoRegistroTable, "Debe de seleccionar un producto.");
+        if (index == -1) return;
+
+        ProductoRegistro productoRegistro = mainModel.getRow(index);
+
+        if (!ReportInView.confirmYesOrNo(
+                eliminarButton,
+                String.format("¿Quieres eliminar el producto '%s'?", productoRegistro.getNombre()))) {
+            return;
+        }
+        accionesProductoRegistro.deleteProductoRegistro(productoRegistro);
+    }//GEN-LAST:event_eliminarButtonActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton añadirButton;
+    private javax.swing.JButton buscarButton;
+    private javax.swing.JTextField busquedaTextfield;
+    private javax.swing.JButton editarButton;
+    private javax.swing.JButton eliminarButton;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable productoRegistroTable;
+    private javax.swing.JButton refreshButton;
+    private javax.swing.JComboBox<Suplidor> suplidoresCombox;
     // End of variables declaration//GEN-END:variables
+
+
 }

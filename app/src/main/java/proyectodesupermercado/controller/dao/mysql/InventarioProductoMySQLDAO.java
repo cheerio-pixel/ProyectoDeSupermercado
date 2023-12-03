@@ -1,5 +1,6 @@
 package proyectodesupermercado.controller.dao.mysql;
 
+import proyectodesupermercado.controller.ConditionsBuilder;
 import proyectodesupermercado.controller.dao.InventarioProductoDAO;
 import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
 import proyectodesupermercado.modelo.InventarioProducto;
@@ -74,18 +75,27 @@ public class InventarioProductoMySQLDAO implements InventarioProductoDAO {
 
     @Override
     public Set<InventarioProducto> searchByName(String name) {
-        String query = "SELECT InventarioProducto.id, ProductoRegistro.nombre, InventarioProducto.cantidad " +
-                "FROM InventarioProducto " +
-                "INNER JOIN ProductoRegistro " +
-                "ON ProductoRegistro.id = InventarioProducto.idProductoRegistro " +
-                "WHERE SOUNDEX(ProductoRegistro.nombre) LIKE CONCAT(\"%\", SOUNDEX(?), \"%\") " +
-                "OR ProductoRegistro.nombre LIKE CONCAT('%', ?, '%') " +
-                "LIMIT 50";
+        ConditionsBuilder builder = new ConditionsBuilder(
+                "SELECT InventarioProducto.id, ProductoRegistro.nombre, InventarioProducto.cantidad " +
+                        "FROM InventarioProducto " +
+                        "INNER JOIN ProductoRegistro " +
+                        "ON ProductoRegistro.id = InventarioProducto.idProductoRegistro "
+        ).addConditionIf(name != null && !name.isBlank(),
+                "SOUNDEX(ProductoRegistro.nombre) " +
+                        "LIKE CONCAT('%', SOUNDEX(?), '%') " +
+                        "OR ProductoRegistro.nombre LIKE CONCAT('%', ?, '%') ",
+                name, name
+        ).setAtLast(" LIMIT 50");
+
         try (Connection conn = dbEnv.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query)
+             PreparedStatement statement = conn.prepareStatement(builder.commitConditions(""))
         ) {
-            statement.setObject(1, name);
-            statement.setObject(2, name);
+            int index = 1;
+            for (Object param : builder.getParams()) {
+                statement.setObject(index, param);
+                index++;
+            }
+
             ResultSet rs = statement.executeQuery();
             Set<InventarioProducto> res = new HashSet<>();
             while (rs.next()) {

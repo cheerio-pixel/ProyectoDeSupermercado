@@ -7,7 +7,7 @@ public final class TableUtils {
     }
 
     public static int getSelectedIndex(JTable table, String nonSelectedMsg) {
-        int index = table.getSelectedRow();
+        int index = table.convertRowIndexToModel(table.getSelectedRow());
         if (index == -1) {
             ReportInView.warning(table, nonSelectedMsg);
         }
