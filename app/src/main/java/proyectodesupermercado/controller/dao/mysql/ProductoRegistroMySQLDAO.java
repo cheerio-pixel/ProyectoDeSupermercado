@@ -91,7 +91,7 @@ public class ProductoRegistroMySQLDAO implements ProductoRegistroDAO {
     @Override
     public Set<ProductoRegistro> listAll() {
         String query = "SELECT * FROM ProductoRegistro " +
-                "INNER JOIN Suplidor " +
+                "LEFT JOIN Suplidor " +
                 "ON Suplidor.id = ProductoRegistro.idSuplidor " +
                 "LIMIT 50";
         try (Connection conn = dbEnv.getConnection();
@@ -111,7 +111,7 @@ public class ProductoRegistroMySQLDAO implements ProductoRegistroDAO {
     @Override
     public Optional<ProductoRegistro> listById(Object id) {
         String query = "SELECT * FROM ProductoRegistro " +
-                "INNER JOIN Suplidor " +
+                "LEFT JOIN Suplidor " +
                 "ON Suplidor.id = ProductoRegistro.idSuplidor " +
                 "WHERE ProductoRegistro.id = ?" +
                 "LIMIT 1";
@@ -157,7 +157,7 @@ public class ProductoRegistroMySQLDAO implements ProductoRegistroDAO {
     public List<ProductoRegistro> searchByFields(String nombre, Suplidor suplidor) {
         ConditionsBuilder builder = new ConditionsBuilder(
                 "SELECT * FROM ProductoRegistro " +
-                        "INNER JOIN Suplidor " +
+                        "LEFT JOIN Suplidor " +
                         "ON Suplidor.id = ProductoRegistro.idSuplidor "
         ).addConditionIf(nombre != null,
                 "SOUNDEX(ProductoRegistro.nombre) LIKE " +
