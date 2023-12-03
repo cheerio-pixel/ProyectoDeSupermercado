@@ -1,11 +1,12 @@
 package proyectodesupermercado.controller;
 
 import proyectodesupermercado.Vista.interfaces.ControlProductoRegistro;
+import proyectodesupermercado.controller.dao.ProductoRegistroDAO;
+import proyectodesupermercado.controller.dao.SuplidorDAO;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
 import proyectodesupermercado.modelo.ProductoRegistro;
 import proyectodesupermercado.modelo.Suplidor;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,7 @@ public class DatabaseControlProductoRegistro implements ControlProductoRegistro 
     @Override
     public Optional<String> deleteProductoRegistro(ProductoRegistro productoRegistro) {
         productoRegistroDAO.delete(productoRegistro.getId(), productoRegistro);
-        return Optional.empty();
+        return productoRegistroDAO.popLastError();
     }
 
     @Override
