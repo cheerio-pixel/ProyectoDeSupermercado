@@ -36,7 +36,9 @@ public class EditarCrearProductoDialog extends javax.swing.JDialog {
         this.source = source;
         this.productoRegistroParaEditar = productoRegistroParaEditar;
 
-        DefaultComboBoxModel<Suplidor> suplidor = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<Suplidor> suplidor = new DefaultComboBoxModel<>(
+                new Suplidor[]{null}
+        );
         suplidor.addAll(suplidorList);
         suplidoresCombobox.setModel(suplidor);
         suplidoresCombobox.setRenderer(new SuplidoresListRenderer());
