@@ -22,7 +22,7 @@ public class ProductoRegistro {
     @Column(name = "precioPorUnidad")
     private double precioDeVenta;
 
-    private ProductoRegistro() {
+    public ProductoRegistro() {
     }
     public ProductoRegistro(String nombre, Suplidor suplidor, double precioDeVenta) {
         this.nombre = nombre;
