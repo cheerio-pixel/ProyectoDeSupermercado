@@ -191,7 +191,7 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
         if (msg.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Se cambio la cantidad con exito.");
         } else {
-            JOptionPane.showMessageDialog(this, msg);
+            JOptionPane.showMessageDialog(this, msg.get());
         }
     }
 
