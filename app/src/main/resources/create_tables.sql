@@ -17,28 +17,17 @@ CREATE TABLE IF NOT EXISTS LimiteDeInventario (
        references Usuario(id)
        on delete cascade
 );
-CREATE TABLE IF NOT EXISTS Categoria (
-       id int not null primary key,
-       nombre varchar(128) not null
-);
 CREATE TABLE IF NOT EXISTS Suplidor (
        id int not null primary key,
        nombre varchar(255) not null,
-       direccion varchar(64) not null
-);
-CREATE TABLE IF NOT EXISTS Telefono (
-       id int not null primary key,
-       idSuplidor int not null references Suplidor(id),
+       direccion varchar(64) not null,
        telefono varchar(15) not null
 );
 CREATE TABLE IF NOT EXISTS ProductoRegistro (
        id int not null primary key,
        nombre varchar(255) not null,
        precioPorUnidad float(2) not null,
-       idCategoria int,
        idSuplidor int,
-       foreign key (idCategoria)
-       references Categoria(id),
        foreign key (idSuplidor)
        references Suplidor(id)
 );
@@ -78,7 +67,8 @@ CREATE TABLE IF NOT EXISTS PuntoDeVentaProducto (
 );
 CREATE TABLE IF NOT EXISTS Solicitud (
        id int not null primary key,
-       fechaDeCreacion timestamp
+       fechaDeCreacion timestamp,
+       aceptado boolean default false
 );
 CREATE TABLE IF NOT EXISTS SolicitudProducto (
        id int not null primary key,
