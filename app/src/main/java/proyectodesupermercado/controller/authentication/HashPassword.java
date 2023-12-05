@@ -18,4 +18,6 @@ public class HashPassword implements Password {
     public boolean checkPassword(char[] password) {
         return Arrays.equals(hasher.hash(password, salt), this.password);
     }
-}
+}   
+
+

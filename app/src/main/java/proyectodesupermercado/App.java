@@ -3,7 +3,10 @@
  */
 package proyectodesupermercado;
 
+import java.awt.event.WindowEvent;
 import java.security.SecureRandom;
+import javax.swing.JFrame;
+import proyectodesupermercado.Vista.paneles.Gestor_De_Empresas;
 
 public class App {
     public static ThreadLocal<SecureRandom> secureRandom;
@@ -20,5 +23,14 @@ public class App {
         secureRandom = ThreadLocal.withInitial(SecureRandom::new);
     }
     public static void main(String[] args) {
+        Gestor_De_Empresas consol = new Gestor_De_Empresas();
+         JFrame dennis = new JFrame();
+         dennis.add(consol);
+         dennis.setVisible(true);
+         dennis.pack();
+         dennis.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+         
+         
+         
     }
 }
