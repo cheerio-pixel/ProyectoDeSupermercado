@@ -9,7 +9,8 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class DatabaseControlInventario implements ControlInventario {
+public class
+DatabaseControlInventario implements ControlInventario {
     private final InventarioProductoDAO inventarioProductoDAO;
 
     public DatabaseControlInventario(InventarioProductoDAO inventarioProductoDAO) {
@@ -29,6 +30,13 @@ public class DatabaseControlInventario implements ControlInventario {
     @Override
     public Optional<String> editProduct(InventarioProducto producto) {
         // TODO: Lacks way of propagating errors
+        inventarioProductoDAO.update(producto.getId(), producto);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<String> descontinuaProducto(InventarioProducto producto) {
+        producto.setCantidad(-1);
         inventarioProductoDAO.update(producto.getId(), producto);
         return Optional.empty();
     }

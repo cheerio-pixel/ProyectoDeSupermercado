@@ -1,3 +1,7 @@
+SET autocommit = 0; -- Start transaction
+
+START TRANSACTION;
+
 CREATE TABLE IF NOT EXISTS Rol (
        id int not null primary key,
        nombre char(2) not null
@@ -97,3 +101,6 @@ CREATE TABLE IF NOT EXISTS TransaccionProducto (
        foreign key (idTransaccion)
        references Transaccion(id)
 );
+
+COMMIT;
+SET autocommit = 1;

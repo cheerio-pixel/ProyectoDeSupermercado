@@ -5,10 +5,9 @@ import proyectodesupermercado.modelo.InventarioProducto;
 
 import java.util.Optional;
 
-public interface ControlInventario {
-    ObjectTableModel<InventarioProducto> search(String prompt);
+public interface ControlInventario extends BuscableEnInventario {
 
     Optional<String> editProduct(InventarioProducto producto);
 
-    ObjectTableModel<InventarioProducto> refreshInitialModel();
+    Optional<String> descontinuaProducto(InventarioProducto producto);
 }

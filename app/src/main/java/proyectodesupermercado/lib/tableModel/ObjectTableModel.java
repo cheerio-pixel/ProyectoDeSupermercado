@@ -30,6 +30,20 @@ public class ObjectTableModel<T> extends AbstractTableModel {
         }
         return res;
     }
+
+    public boolean contains(T row) {
+        return objectList.contains(row);
+    }
+
+    public List<T> getObjectList() {
+        return objectList;
+    }
+
+    public boolean addRow(T row) {
+        boolean res = objectList.add(row);
+        fireTableDataChanged();
+        return res;
+    }
     public T removeRow(int i) {
         T res = objectList.remove(i);
         fireTableRowsDeleted(i, i);

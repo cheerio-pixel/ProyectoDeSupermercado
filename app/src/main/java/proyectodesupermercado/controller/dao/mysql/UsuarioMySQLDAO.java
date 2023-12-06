@@ -1,6 +1,7 @@
 package proyectodesupermercado.controller.dao.mysql;
 
 import proyectodesupermercado.controller.ConditionsBuilder;
+import proyectodesupermercado.controller.authentication.HashPasswordFactory;
 import proyectodesupermercado.controller.authentication.Rol;
 import proyectodesupermercado.controller.dao.DatabaseUtil;
 import proyectodesupermercado.controller.dao.UsuarioDAO;
@@ -26,6 +27,46 @@ public class UsuarioMySQLDAO implements UsuarioDAO {
     public UsuarioMySQLDAO(DatabaseEnvironment dbEnv) {
         this.dbEnv = dbEnv;
         mapper = new TableMapper<>(Usuario.class);
+    }
+
+    public static void initTestUsers(UsuarioMySQLDAO usuarioDAO) {
+        Usuario user = new Usuario(
+                "TestPOV",
+                new HashPasswordFactory
+                        .PBKDF2HashPasswordFactory()
+                        .createPassword("test".toCharArray()),
+                Rol.PuntoDeVenta
+        );
+        usuarioDAO.insert(user);
+        usuarioDAO.insert(new Usuario(
+                "TestGe",
+                new HashPasswordFactory
+                        .PBKDF2HashPasswordFactory()
+                        .createPassword("test".toCharArray()),
+                Rol.Gerente
+        ));
+        usuarioDAO.insert(new Usuario(
+                "TestInv",
+                new HashPasswordFactory
+                        .PBKDF2HashPasswordFactory()
+                        .createPassword("test".toCharArray()),
+                Rol.Inventario
+        ));
+        usuarioDAO.insert(new Usuario(
+                "TestIT",
+                new HashPasswordFactory
+                        .PBKDF2HashPasswordFactory()
+                        .createPassword("test".toCharArray()),
+                Rol.AdminIT
+        ));
+        usuarioDAO.update(0, user);
+        if (usuarioDAO.isUsernameInStorage(user.getNombre())) {
+            usuarioDAO.listByName(user.getNombre())
+                    .map(u -> u.checkPassword("test".toCharArray()))
+                    .ifPresent(System.out::println);
+        } else {
+            usuarioDAO.insert(user);
+        }
     }
 
     @Override

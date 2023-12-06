@@ -4,6 +4,8 @@
  */
 package proyectodesupermercado.Vista.paneles;
 
+import proyectodesupermercado.modelo.ProductoPuntoDeVenta;
+
 /**
  *
  * @author DELL
