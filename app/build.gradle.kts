@@ -24,7 +24,9 @@ dependencies {
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-    implementation("mysql:mysql-connector-java:5.1.40")
+    implementation("mysql:mysql-connector-java:5.1.46")
+    // https://central.sonatype.com/artifact/com.github.lgooddatepicker/LGoodDatePicker
+    implementation("com.github.lgooddatepicker:LGoodDatePicker:11.2.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

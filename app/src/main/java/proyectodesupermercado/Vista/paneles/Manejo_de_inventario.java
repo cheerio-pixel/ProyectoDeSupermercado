@@ -62,7 +62,7 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         cantidadProductoSpinner = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
+        descontinuarButton = new javax.swing.JButton();
 
         busquedaTextfield.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.gray, java.awt.Color.gray, java.awt.Color.gray));
         busquedaTextfield.addActionListener(new java.awt.event.ActionListener() {
@@ -111,7 +111,12 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
 
         cantidadProductoSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
-        jButton1.setText("<html>\n<center>Descontinuar<br>Producto</center>\n</html>");
+        descontinuarButton.setText("<html>\n<center>Descontinuar<br>Producto</center>\n</html>");
+        descontinuarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                descontinuarButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -128,7 +133,7 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
                                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(cantidadProductoSpinner)
                                         .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton1)
+                                        .addComponent(descontinuarButton)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(jLabel2)
@@ -159,7 +164,7 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
                                                 .addGap(32, 32, 32)
                                                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jButton1)))
+                                                .addComponent(descontinuarButton)))
                                 .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -191,7 +196,7 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
         if (msg.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Se cambio la cantidad con exito.");
         } else {
-            JOptionPane.showMessageDialog(this, msg);
+            JOptionPane.showMessageDialog(this, msg.get());
         }
     }
 
@@ -207,11 +212,20 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
         doSearch();
     }//GEN-LAST:event_busquedaTextfieldActionPerformed
 
+    private void descontinuarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descontinuarButtonActionPerformed
+        int index = TableUtils.getSelectedIndex(mainTable, "Debe de selecionar un producto");
+        if (index == -1) {
+            return;
+        }
+        InventarioProducto producto = currentModel.getRow(index);
+        controlInventario.descontinuaProducto(producto);
+    }//GEN-LAST:event_descontinuarButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarButton;
     private javax.swing.JTextField busquedaTextfield;
     private javax.swing.JSpinner cantidadProductoSpinner;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton descontinuarButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

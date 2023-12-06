@@ -8,12 +8,15 @@ import java.util.Optional;
 
 public class DatabaseSesionUsuario implements SesionUsuario {
     private final UsuarioDAO usuarioDAO;
-    private final StateBroker stateBroker;
+    private StateBroker stateBroker;
     private Usuario loggedUser;
 
-    public DatabaseSesionUsuario(UsuarioDAO usuarioDAO, StateBroker stateBroker) {
-        this.stateBroker = stateBroker;
+    public DatabaseSesionUsuario(UsuarioDAO usuarioDAO) {
         this.usuarioDAO = usuarioDAO;
+    }
+
+    public void setStateBroker(StateBroker stateBroker) {
+        this.stateBroker = stateBroker;
     }
 
     @Override

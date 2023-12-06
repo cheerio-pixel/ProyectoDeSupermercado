@@ -26,15 +26,6 @@ public abstract class EditarCrearUsuarioDialog extends javax.swing.JDialog {
 
     protected DialogSource<Usuario> source;
     protected PasswordFactory passwordFactory;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelarButton;
-    private javax.swing.JButton guardarButton;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField nombreTextfield;
-    private javax.swing.JLabel passwordLabel;
-    private javax.swing.JPasswordField passwordTextfield;
-    private javax.swing.JComboBox<Rol> rolComboBox;
 
     /**
      * Creates new form EditarCrearUsuarioDialog
@@ -180,5 +171,15 @@ public abstract class EditarCrearUsuarioDialog extends javax.swing.JDialog {
     protected JTextField getNombreTextfield() {
         return nombreTextfield;
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelarButton;
+    private javax.swing.JButton guardarButton;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField nombreTextfield;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JPasswordField passwordTextfield;
+    private javax.swing.JComboBox<Rol> rolComboBox;
     // End of variables declaration//GEN-END:variables
 }
