@@ -4,17 +4,42 @@
  */
 package proyectodesupermercado.Vista.paneles;
 
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import proyectodesupermercado.Vista.TableUtils;
+import proyectodesupermercado.Vista.dialogs.EditarCrearProductoDialog;
+import proyectodesupermercado.Vista.dialogs.ListaPendientes;
+import proyectodesupermercado.Vista.dialogs.MenuAnadirProductosDialog;
+import proyectodesupermercado.Vista.interfaces.ActuadorDePuntoDeVenta;
+import proyectodesupermercado.Vista.interfaces.ControlInventario;
+import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.Productos;
+
 /**
  *
  * @author DELL
  */
 public class PanelPuntoDeVenta extends javax.swing.JPanel {
-
+    private ObjectTableModel<Productos> mainModel;    
+    private double total;
+    private ControlInventario CIPuntoDeVenta;
     /**
      * Creates new form PanelPuntoDeVenta
+     * @param CIPuntoDeVenta
      */
-    public PanelPuntoDeVenta() {
+    public PanelPuntoDeVenta(ControlInventario CIPuntoDeVenta) {
         initComponents();
+        
+        botonVerPendientes.addActionListener(e -> botonVerPendientesActionPerformed(e));
+        botonVerEstadoEditores.addActionListener(e -> botonVerEstadoEditoresActionPerformed(e));
+        botonCrearTransaccion.addActionListener(e -> botonCrearTransaccionActionPerformed(e));
+        botonCancelarActual.addActionListener(e -> botonCancelarActualActionPerformed(e));
+        botonAnadirProducto.addActionListener(e -> botonAnadirProductoActionPerformed(e));
+        botonEliminarProducto2.addActionListener(e -> botonEliminarProducto2ActionPerformed(e));
+        botonConfirmarPedido.addActionListener(e -> botonConfirmarPedidoActionPerformed(e));
+        
+        this.CIPuntoDeVenta = CIPuntoDeVenta;
+        refreshTable(mainModel);
     }
 
     /**
@@ -31,6 +56,7 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        popupMenu1 = new java.awt.PopupMenu();
         botonVerPendientes = new javax.swing.JButton();
         botonVerEstadoEditores = new javax.swing.JButton();
         botonCrearTransaccion = new javax.swing.JButton();
@@ -43,6 +69,7 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
         TablaVentas = new javax.swing.JTable();
         labelPuntodeVenta = new javax.swing.JLabel();
         LabelTotal = new javax.swing.JLabel();
+        label1 = new java.awt.Label();
 
         botonEliminarProducto1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         botonEliminarProducto1.setText("Eliminar Producto");
@@ -69,10 +96,19 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        botonVerPendientes.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        botonVerPendientes.setText("Ver Pendientes");
+        popupMenu1.setLabel("popupMenu1");
 
-        botonVerEstadoEditores.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        botonVerPendientes.setFont(new java.awt.Font("Space Grotesk", 0, 12));
+        botonVerPendientes.setText("Ver Pendientes");
+        botonVerPendientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonVerPendientesActionPerformed(evt);
+            }
+        });
+
+        botonVerEstadoEditores.setFont(new java.awt.Font("Space Grotesk", 0, 12));
         botonVerEstadoEditores.setText("<html> Ver Estado <br>de Editores <html>"); // NOI18N
         botonVerEstadoEditores.setActionCommand("Ver Estado de Editores");
         botonVerEstadoEditores.addActionListener(new java.awt.event.ActionListener() {
@@ -81,52 +117,77 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
             }
         });
 
-        botonCrearTransaccion.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        botonCrearTransaccion.setFont(new java.awt.Font("Space Grotesk", 0, 12));
         botonCrearTransaccion.setText("Crear Transaccion");
+        botonCrearTransaccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCrearTransaccionActionPerformed(evt);
+            }
+        });
 
-        botonCancelarActual.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        botonCancelarActual.setText("Cancelar Pedudo");
+        botonCancelarActual.setFont(new java.awt.Font("Space Grotesk", 0, 12));
+        botonCancelarActual.setLabel("Cancelar Pedido");
+        botonCancelarActual.setName("CancelarPedido"); // NOI18N
         botonCancelarActual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonCancelarActualActionPerformed(evt);
             }
         });
 
-        botonAnadirProducto.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        botonAnadirProducto.setText("Añadir Porducto");
+        botonAnadirProducto.setFont(new java.awt.Font("Space Grotesk", 0, 12));
+        botonAnadirProducto.setText("Añadir Producto");
+        botonAnadirProducto.setToolTipText("");
+        botonAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAnadirProductoActionPerformed(evt);
+            }
+        });
 
-        botonEliminarProducto2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        botonEliminarProducto2.setFont(new java.awt.Font("Space Grotesk", 0, 12));
         botonEliminarProducto2.setText("Eliminar Producto");
+        botonEliminarProducto2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEliminarProducto2ActionPerformed(evt);
+            }
+        });
 
-        botonConfirmarPedido.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        botonConfirmarPedido.setFont(new java.awt.Font("Space Grotesk", 0, 12));
         botonConfirmarPedido.setText("Confirmar Pedido");
+        botonConfirmarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonConfirmarPedidoActionPerformed(evt);
+            }
+        });
 
-        TablaVentas.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        TablaVentas.setFont(new java.awt.Font("Space Grotesk", 0, 12));
         TablaVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Cantidad", "Impuestos", "Total"
+                "Nombre", "Precio", "Cantidad", "Impuestos", "Total"
             }
         ));
+        TablaVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(TablaVentas);
 
         jScrollPane3.setViewportView(jScrollPane2);
 
-        labelPuntodeVenta.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        labelPuntodeVenta.setFont(new java.awt.Font("Space Grotesk", 1, 18));
         labelPuntodeVenta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelPuntodeVenta.setText("Punto de Venta");
         labelPuntodeVenta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         labelPuntodeVenta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        LabelTotal.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        LabelTotal.setFont(new java.awt.Font("Space Grotesk", 1, 18));
         LabelTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelTotal.setText("Total:");
+        LabelTotal.setText("Total:  <Result>");
         LabelTotal.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         LabelTotal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         LabelTotal.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         LabelTotal.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
+        label1.setText("label1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -144,7 +205,7 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(botonConfirmarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                                .addComponent(botonConfirmarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(126, 126, 126)
                                 .addComponent(LabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(17, 17, 17))
@@ -191,19 +252,52 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(LabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(10, Short.MAX_VALUE))))
+                        .addContainerGap(12, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonCancelarActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActualActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_botonCancelarActualActionPerformed
 
     private void botonVerEstadoEditoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerEstadoEditoresActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_botonVerEstadoEditoresActionPerformed
 
+    private void botonVerPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerPendientesActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_botonVerPendientesActionPerformed
 
+    private void botonCrearTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearTransaccionActionPerformed
+        // TODO add your handling code here: 
+    }//GEN-LAST:event_botonCrearTransaccionActionPerformed
+
+    private void botonEliminarProducto2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarProducto2ActionPerformed
+        // TODO add your handling code here:
+        int index = TableUtils.getSelectedIndex(TablaVentas, "Debe de seleccionar alguna entrada en la tabla.");
+        if (index == -1) {
+            return;
+        }
+        mainModel.removeRow(index);
+    }//GEN-LAST:event_botonEliminarProducto2ActionPerformed
+
+    private void botonAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnadirProductoActionPerformed
+        // TODO add your handling code here:
+        new MenuAnadirProductosDialogImpl(TablaVentas, true,CIPuntoDeVenta){
+        };
+    }//GEN-LAST:event_botonAnadirProductoActionPerformed
+    
+       
+    private void refreshTable(ObjectTableModel<Productos> model) {
+        TablaVentas.setModel(mainModel = model);
+    }
+    
+    private void botonConfirmarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConfirmarPedidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonConfirmarPedidoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LabelTotal;
     private javax.swing.JTable TablaVentas;
@@ -221,6 +315,14 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
+    private java.awt.Label label1;
     private javax.swing.JLabel labelPuntodeVenta;
+    private java.awt.PopupMenu popupMenu1;
     // End of variables declaration//GEN-END:variables
+
+    private static class MenuAnadirProductosDialogImpl extends MenuAnadirProductosDialog {
+        public MenuAnadirProductosDialogImpl(JComponent parent, boolean modal, ControlInventario accionesInventario) {
+            super(parent, modal,accionesInventario);
+        }
+    }
 }

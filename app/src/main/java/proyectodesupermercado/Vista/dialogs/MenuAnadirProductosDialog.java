@@ -9,6 +9,10 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import proyectodesupermercado.Vista.interfaces.ControlInventario;
+import proyectodesupermercado.controller.DatabaseControlInventario;
+import proyectodesupermercado.controller.dao.InventarioProductoDAO;
+
 
 /**
  *
@@ -16,30 +20,31 @@ import javax.swing.SwingUtilities;
  */
 public class MenuAnadirProductosDialog extends javax.swing.JDialog {
 
-    private javax.swing.JPanel jPanel1;
 
+    
+    private ControlInventario accionesInventario;
+    private String prompt = accionesInventario.toString();
+    private InventarioProductoDAO InventarioProductoDAO;
     /**
      * Creates new form MenuAnadirProductosDialog
      */
-    public MenuAnadirProductosDialog(JComponent parent, boolean modal) {
+    public MenuAnadirProductosDialog(JComponent parent, boolean modal, ControlInventario accionesInventario) {
         super((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent), modal);
         setLocationRelativeTo(parent);
         initComponents();
+        this.accionesInventario = accionesInventario;
 
         DefaultListCellRenderer render = (DefaultListCellRenderer) listaProductos.getCellRenderer();
         render.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     private void botonBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBusquedaActionPerformed
-
+        DatabaseControlInventario dialog = new DatabaseControlInventario(InventarioProductoDAO);
+        accionesInventario.search(prompt);
     }//GEN-LAST:event_botonBusquedaActionPerformed
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonBusqueda;
-    private javax.swing.JButton botonCancelar;
-    private javax.swing.JButton botonSeleccionar;
-    private javax.swing.JLabel jLabel1;
+  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -160,9 +165,16 @@ public class MenuAnadirProductosDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables                                     
+    private javax.swing.JButton botonBusqueda;
+    private javax.swing.JButton botonCancelar;
+    private javax.swing.JButton botonSeleccionar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listaProductos;
     private javax.swing.JSpinner spinnerProductos;
     private javax.swing.JTextField textFiledBusqueda;
-    // End of variables declaration//GEN-END:variables
+    private javax.swing.JPanel jPanel1;
+    // End of variables declaration//GEN-END:variables                                
 }
