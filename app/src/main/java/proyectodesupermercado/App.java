@@ -57,9 +57,9 @@ public class App {
     public static void main(String[] args) {
 
         DatabaseEnvironment dbEnv = new DatabaseEnvironment(
-                "jdbc:mysql://localhost:3306/Prog1",
-                "MySQL test",
-                "testtest"
+                "jdbc:mysql://localhost:3306/ProyectoFinal?useSSL=false",
+                "root",
+                "darkwister171531"
         );
         RolDAO.initRoles(dbEnv);
         UsuarioMySQLDAO usuarioDAO = new UsuarioMySQLDAO(dbEnv);
@@ -114,7 +114,8 @@ public class App {
                                 new DatabaseControlHistorialSolicitudes(
                                         controlSolicitudesDAO
                                 ),
-                                sesionUsuario
+                                sesionUsuario,
+                                new SuplidorMySQLDAO(dbEnv)
                         ),
                         Rol.AdminIT, new AdminITViewCreator(
                                 new DatabaseControlUsuario(

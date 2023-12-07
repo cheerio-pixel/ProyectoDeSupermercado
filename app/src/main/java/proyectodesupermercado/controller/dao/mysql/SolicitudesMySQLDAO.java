@@ -152,4 +152,19 @@ public class SolicitudesMySQLDAO implements SolicitudesDAO {
             throw new RuntimeException(e);
         }
     }
+   public void update(Object id, SolicitudCompra object) {
+    String queryUpdateSolicitud = "UPDATE Solicitud SET aceptado = true WHERE id = ?";
+    
+    try (Connection conn = dbEnv.getConnection();
+         PreparedStatement statementUpdateSolicitud = conn.prepareStatement(queryUpdateSolicitud)) {
+        conn.setAutoCommit(false);
+
+        statementUpdateSolicitud.setInt(1, (int) id);
+        statementUpdateSolicitud.executeUpdate();
+
+        conn.commit();
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
 }

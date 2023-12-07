@@ -9,6 +9,7 @@ import proyectodesupermercado.Vista.interfaces.SesionUsuario;
 import proyectodesupermercado.Vista.paneles.ControlSolicitudes;
 import proyectodesupermercado.Vista.paneles.CreacionProductos;
 import proyectodesupermercado.Vista.paneles.Gestor_De_Empresas;
+import proyectodesupermercado.controller.dao.mysql.SuplidorMySQLDAO;
 
 import javax.swing.JPanel;
 
@@ -20,26 +21,28 @@ public class GerenteViewCreator implements ViewCreator {
     private final BuscableEnInventario buscador;
     private final ControlHistorialSolicitud controlHistorialSolicitud;
     private final SesionUsuario sesionUsuario;
+    private final SuplidorMySQLDAO suplidorDAO;
 
     public GerenteViewCreator(ControlProductoRegistro controlProductoRegistro,
                               ControlManejoSolicitudes accionesManejoSolicitudes,
                               BuscableEnInventario buscador,
                               ControlListaPendientes accionesListaPendientes,
                               ControlHistorialSolicitud controlHistorialSolicitud,
-                              SesionUsuario sesionUsuario
-    ) {
+                              SesionUsuario sesionUsuario,
+                              SuplidorMySQLDAO suplidorDAO) {
         this.controlProductoRegistro = controlProductoRegistro;
         this.accionesManejoSolicitudes = accionesManejoSolicitudes;
         this.buscador = buscador;
         this.accionesListaPendientes = accionesListaPendientes;
         this.controlHistorialSolicitud = controlHistorialSolicitud;
         this.sesionUsuario = sesionUsuario;
+        this.suplidorDAO = suplidorDAO;
     }
 
     @Override
     public JPanel create() {
         GeneralGroup group = new GeneralGroup();
-        group.addTab("Gestor de Empresas", new Gestor_De_Empresas());
+        group.addTab("Gestor de Empresas", new Gestor_De_Empresas(suplidorDAO));
         group.addTab("Control de solicitudes", new ControlSolicitudes(
                 accionesManejoSolicitudes,
                 accionesListaPendientes,
