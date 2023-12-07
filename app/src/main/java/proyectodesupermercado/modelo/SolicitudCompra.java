@@ -10,7 +10,7 @@ public class SolicitudCompra {
     private long id;
     @TableModelColumn(name = "Creacion", index = 2)
     private final Timestamp fecha;
-    @TableModelColumn(name = "Acepatdo", index = 3)
+    @TableModelColumn(name = "Aceptado", index = 3)
     private boolean aceptado;
     private List<SolicitudCompraProducto> productos;
 
@@ -35,5 +35,9 @@ public class SolicitudCompra {
 
     public long getId() {
         return id;
+    }
+    
+    public boolean getAceptado(){
+        return aceptado;
     }
 }
