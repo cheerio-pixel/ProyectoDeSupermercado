@@ -7,7 +7,6 @@ package proyectodesupermercado.Vista.paneles;
 import proyectodesupermercado.Vista.interfaces.ControlManejoGanancias;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
 import proyectodesupermercado.modelo.ProductoManejoGanancias;
-import proyectodesupermercado.controller.DBControlManejoGanancias;
 
 /**
  *
@@ -39,7 +38,7 @@ public class PanelManejoGanancias extends javax.swing.JPanel {
             mainModel = controlManejoGanancias.tablaInicial();
         } else {
             mainModel = controlManejoGanancias.buscar(textFieldProducto.getText());
-            textFieldProducto.setText("");
+//            textFieldProducto.setText("");
         }
         TablaManejoGanancias.setModel(mainModel);
     }
@@ -117,7 +116,7 @@ public class PanelManejoGanancias extends javax.swing.JPanel {
                 "Productos", "<html>Cantidad<br>de Ventas<htrml>", "Ganancias", "Fecha"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
+            final boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
 

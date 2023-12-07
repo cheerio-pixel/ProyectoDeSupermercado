@@ -4,6 +4,11 @@
  */
 package proyectodesupermercado.controller.dao.mysql;
 
+import proyectodesupermercado.controller.ConditionsBuilder;
+import proyectodesupermercado.controller.dao.ProductoManejoGananciasDAO;
+import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
+import proyectodesupermercado.modelo.ProductoManejoGanancias;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,11 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import proyectodesupermercado.controller.dao.ProductoManejoGananciasDAO;
-import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
-import proyectodesupermercado.modelo.ProductoManejoGanancias;
-import proyectodesupermercado.controller.ConditionsBuilder;
-import proyectodesupermercado.lib.databaseUtils.TableMapper;
 
 /**
  *
@@ -44,7 +44,7 @@ public class ManejoGananciasMySQLDAO implements ProductoManejoGananciasDAO {
         ).addConditionIf(producto != null && !producto.isBlank(),
                 "SOUNDEX(ProductoRegistro.nombre) LIKE " +
                         "CONCAT('%', SOUNDEX(?), '%') " +
-                        "AND ProductoRegistro.nombre LIKE " +
+                        "OR ProductoRegistro.nombre LIKE " +
                         "CONCAT('%', ?, '%')",
                 producto, producto
         ).setAtLast(" LIMIT 50");
