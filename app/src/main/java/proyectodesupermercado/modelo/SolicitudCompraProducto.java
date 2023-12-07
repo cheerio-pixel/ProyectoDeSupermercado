@@ -32,7 +32,7 @@ public class SolicitudCompraProducto {
         SolicitudCompraProducto that = (SolicitudCompraProducto) object;
         return idProductoRegistro == that.idProductoRegistro;
     }
-
+   
     public long getIdProductoRegistro() {
         return idProductoRegistro;
     }

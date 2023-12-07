@@ -6,9 +6,11 @@ package proyectodesupermercado;
 import proyectodesupermercado.Vista.AppFrame;
 import proyectodesupermercado.Vista.interfaces.ControlInventario;
 import proyectodesupermercado.Vista.roles.AdminITViewCreator;
+import proyectodesupermercado.Vista.roles.ContabilidadViewCreator;
 import proyectodesupermercado.Vista.roles.GerenteViewCreator;
 import proyectodesupermercado.Vista.roles.InventarioViewCreator;
 import proyectodesupermercado.Vista.roles.PuntoDeVentaViewCreator;
+import proyectodesupermercado.controller.DBControlManejoGanancias;
 import proyectodesupermercado.controller.DatabaseControlHistorialSolicitudes;
 import proyectodesupermercado.controller.DatabaseControlInventario;
 import proyectodesupermercado.controller.DatabaseControlListaPendientes;
@@ -25,6 +27,7 @@ import proyectodesupermercado.controller.dao.RolDAO;
 import proyectodesupermercado.controller.dao.SolicitudesDAO;
 import proyectodesupermercado.controller.dao.SuplidorDAO;
 import proyectodesupermercado.controller.dao.mysql.InventarioProductoMySQLDAO;
+import proyectodesupermercado.controller.dao.mysql.ManejoGananciasMySQLDAO;
 import proyectodesupermercado.controller.dao.mysql.NotificacionesMySQLDAO;
 import proyectodesupermercado.controller.dao.mysql.ProductoRegistroMySQLDAO;
 import proyectodesupermercado.controller.dao.mysql.PuntoDeVentaStockMySQLDAO;
@@ -54,9 +57,9 @@ public class App {
     public static void main(String[] args) {
 
         DatabaseEnvironment dbEnv = new DatabaseEnvironment(
-                "jdbc:mysql://192.168.199.23:3306/Prog1",
-                "MySQL test",
-                "testtest"
+                "jdbc:mysql://localhost:3306/ProyectoFinal?useSSL=false",
+                "root",
+                "darkwister171531"
         );
         RolDAO.initRoles(dbEnv);
         UsuarioMySQLDAO usuarioDAO = new UsuarioMySQLDAO(dbEnv);
@@ -111,13 +114,19 @@ public class App {
                                 new DatabaseControlHistorialSolicitudes(
                                         controlSolicitudesDAO
                                 ),
-                                sesionUsuario
+                                sesionUsuario,
+                                new SuplidorMySQLDAO(dbEnv)
                         ),
                         Rol.AdminIT, new AdminITViewCreator(
                                 new DatabaseControlUsuario(
                                         new UsuarioMySQLDAO(dbEnv)
                                 ),
                                 new HashPasswordFactory.PBKDF2HashPasswordFactory()
+                        ),
+                        Rol.Contabilidad, new ContabilidadViewCreator(
+                                new DBControlManejoGanancias(
+                                        new ManejoGananciasMySQLDAO(dbEnv)
+                                )
                         )
                 )
         );

@@ -22,9 +22,7 @@ public class Manejo_de_inventario extends javax.swing.JPanel {
     /**
      * Creates new form Manejo_de_inventario
      */
-    public Manejo_de_inventario(
-            ControlInventario controlInventario
-    ) {
+    public Manejo_de_inventario(ControlInventario controlInventario) {
         initComponents();
 
         this.controlInventario = controlInventario;
