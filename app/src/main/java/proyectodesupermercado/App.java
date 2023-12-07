@@ -54,7 +54,7 @@ public class App {
     public static void main(String[] args) {
 
         DatabaseEnvironment dbEnv = new DatabaseEnvironment(
-                "jdbc:mysql://localhost:3306/Prog1",
+                "jdbc:mysql://192.168.199.23:3306/Prog1",
                 "MySQL test",
                 "testtest"
         );
