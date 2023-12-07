@@ -1,5 +1,6 @@
 package proyectodesupermercado.controller.dao.mysql;
 
+import proyectodesupermercado.controller.dao.DatabaseUtil;
 import proyectodesupermercado.controller.dao.SuplidorDAO;
 import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
 import proyectodesupermercado.lib.databaseUtils.TableMapper;
@@ -13,7 +14,6 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import proyectodesupermercado.controller.dao.DatabaseUtil;
 
 public class SuplidorMySQLDAO implements SuplidorDAO {
     private final DatabaseEnvironment dbEnv;
@@ -33,7 +33,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
             String query = "SELECT * FROM Suplidor LIMIT 50";
             try (Connection conn = dbEnv.getConnection();
                  Statement statement = conn.createStatement()) {
-                ResultSet rs = statement.executeQuery(query);
+                ResultSet rs = statement.executeQuery();
                 Set<Suplidor> res = new HashSet<>(50);
                 while (rs.next()) {
                     res.add(suplidorTableMapper.mapResultSetToObject(rs));
@@ -50,7 +50,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
         try (Connection conn = dbEnv.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setObject(1, id);
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 return Optional.of(suplidorTableMapper.mapResultSetToObject(rs));
             }
@@ -73,7 +73,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
              statement.setObject(1,1+DatabaseUtil.getLastInsertId(statement, "Suplidor") );
             statement.setObject(2, nombre);
             statement.setObject(3, nada);
-            statement.executeUpdate(query); 
+            statement.executeUpdate();
             return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -97,7 +97,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
                 
              PreparedStatement statement = conn.prepareStatement(query)) {
              statement.setString(1, nombre);
-            statement.executeQuery(query); 
+            statement.executeQuery();
             return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -116,7 +116,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
             statement.setString(1, direccion);
             statement.setString(2, Telefono);
              statement.setString(3, nombre);
-            statement.executeUpdate(query); 
+            statement.executeUpdate();
             return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -130,7 +130,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
         try (Connection conn = dbEnv.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
              statement.setString(1, nombre);
-            statement.executeQuery(query); 
+            statement.executeQuery();
             return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
