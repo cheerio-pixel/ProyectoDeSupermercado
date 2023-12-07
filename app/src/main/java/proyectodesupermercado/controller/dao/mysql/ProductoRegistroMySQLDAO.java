@@ -186,8 +186,7 @@ public class ProductoRegistroMySQLDAO implements ProductoRegistroDAO {
                         "OR ProductoRegistro.nombre LIKE " +
                         "CONCAT('%', ?, '%')",
                 nombre, nombre
-        ).addConditionIf(suplidor != null
-                        && suplidor.getId() != -1,
+        ).addConditionIf(suplidor != null && suplidor.getId() != -1,
                 "ProductoRegistro.idSuplidor = ?",
                 suplidor != null ? suplidor.getId() : 0
         ).setAtLast(" LIMIT 50");

@@ -101,10 +101,50 @@ public class ManejoGananciasMySQLDAO implements ProductoManejoGananciasDAO {
             throw new RuntimeException(e);
         }
     }
+    
+@Override
+public List<ProductoManejoGanancias> searchByFecha(String fecha) {
+    ConditionsBuilder builder = new ConditionsBuilder(
+        "SELECT ProductoRegistro.nombre, TransaccionProducto.cantidad, TransaccionProducto.cantidad * TransaccionProducto.precioPorUnidad, Transaccion.fechaDeCreacion " +
+        "FROM TransaccionProducto " +
+        "INNER JOIN ProductoRegistro " +
+        "ON TransaccionProducto.idProductoRegistro = ProductoRegistro.id " +
+        "INNER JOIN Transaccion " +
+        "ON TransaccionProducto.idTransaccion = Transaccion.id "
+    ).addConditionIf(fecha != null && !fecha.isBlank(),
+        "Transaccion.fechaDeCreacion = ?", fecha
+    ).setAtLast(" LIMIT 50");
+
+    String query = builder.commitConditions("");
+
+    try (Connection conn = dbEnv.getConnection();
+         PreparedStatement statement = conn.prepareStatement(query)) {
+        int index = 1;
+        for (Object param : builder.getParams()) {
+            statement.setObject(index, param);
+            index++;
+        }
+
+        ResultSet rs = statement.executeQuery();
+        List<ProductoManejoGanancias> res = new ArrayList<>();
+        while (rs.next()) {
+            res.add(
+                new ProductoManejoGanancias(
+                    rs.getString("ProductoRegistro.nombre"),
+                    rs.getInt("TransaccionProducto.cantidad"),
+                    rs.getInt("TransaccionProducto.cantidad * TransaccionProducto.precioPorUnidad"),
+                    rs.getString("Transaccion.fechaDeCreacion"))
+            );
+        }
+        return res;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
 
     @Override
     public Optional<ProductoManejoGanancias> listById(Object id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
 }
