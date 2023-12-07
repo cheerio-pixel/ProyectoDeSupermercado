@@ -54,7 +54,7 @@ public class App {
     public static void main(String[] args) {
 
         DatabaseEnvironment dbEnv = new DatabaseEnvironment(
-                "jdbc:mysql://192.168.199.23:3306/Prog1",
+                "jdbc:mysql://localhost:3306/Prog1",
                 "MySQL test",
                 "testtest"
         );
@@ -111,7 +111,8 @@ public class App {
                                 new DatabaseControlHistorialSolicitudes(
                                         controlSolicitudesDAO
                                 ),
-                                sesionUsuario
+                                sesionUsuario,
+                                new SuplidorMySQLDAO(dbEnv)
                         ),
                         Rol.AdminIT, new AdminITViewCreator(
                                 new DatabaseControlUsuario(

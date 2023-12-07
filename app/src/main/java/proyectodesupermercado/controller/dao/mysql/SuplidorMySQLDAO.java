@@ -33,7 +33,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
             String query = "SELECT * FROM Suplidor LIMIT 50";
             try (Connection conn = dbEnv.getConnection();
                  Statement statement = conn.createStatement()) {
-                ResultSet rs = statement.executeQuery();
+                ResultSet rs = statement.executeQuery(query);
                 Set<Suplidor> res = new HashSet<>(50);
                 while (rs.next()) {
                     res.add(suplidorTableMapper.mapResultSetToObject(rs));

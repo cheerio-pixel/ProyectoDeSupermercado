@@ -15,14 +15,15 @@ import proyectodesupermercado.modelo.MiModeloDeTabla;
 public class Gestor_De_Empresas extends javax.swing.JPanel {
   private SuplidorMySQLDAO suplidorDAO;
   private String textoSeleccionado;
-  private MiModeloDeTabla modeloDeTabla;
+  private final MiModeloDeTabla modeloDeTabla;
   
     /**
      * Creates new form Gestor_De_Empresas
      */
-    public Gestor_De_Empresas() {
+    public Gestor_De_Empresas(SuplidorMySQLDAO suplidorDAO) {
+        this.suplidorDAO = suplidorDAO;
         initComponents();
-        suplidorDAO = new SuplidorMySQLDAO();
+        this.suplidorDAO = suplidorDAO;
         modeloDeTabla = new MiModeloDeTabla(new Object[][]{}, new String[]{"Productos", "Precios"});
         Tabla.setModel(modeloDeTabla);
     }
@@ -30,12 +31,6 @@ public class Gestor_De_Empresas extends javax.swing.JPanel {
       public void agregarFilaATabla(Object[] rowData) {
         modeloDeTabla.addRow(rowData);
     }
-      
-      
-    
-    
-    
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

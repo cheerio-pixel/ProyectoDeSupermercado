@@ -5,10 +5,11 @@
 package proyectodesupermercado.Vista;
 
 import proyectodesupermercado.Vista.interfaces.ContentChanger;
-import java.awt.Image;
+
 import javax.swing.JPanel;
-import java.awt.event.ActionListener;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
 /**
  * @author cheerio-pixel
  */
@@ -21,12 +22,10 @@ public class AppFrame extends javax.swing.JFrame implements ContentChanger {
      */
     public AppFrame() {
         initComponents();
-        setIconImage(getLogo()); 
+        setIconImage(getLogo());
     }
-     public Image getLogo()
-     {   
-     Image imagen = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/logo.png"));
-     return imagen;
+     public Image getLogo() {
+         return Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("logo.png"));
       
       }
     @Override
