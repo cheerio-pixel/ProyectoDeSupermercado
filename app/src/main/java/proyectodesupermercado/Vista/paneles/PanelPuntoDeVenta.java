@@ -4,6 +4,22 @@
  */
 package proyectodesupermercado.Vista.paneles;
 
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.TableUtils;
+import proyectodesupermercado.Vista.dialogs.MenuAnadirProductosDialog;
+import proyectodesupermercado.Vista.dialogs.PendientesStockPuntoDeVentaDialog;
+import proyectodesupermercado.Vista.interfaces.BuscableEnInventario;
+import proyectodesupermercado.Vista.interfaces.ControlPuntoDeVenta;
+import proyectodesupermercado.Vista.interfaces.SesionUsuario;
+import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.PuntoDeVentaProducto;
+import proyectodesupermercado.modelo.PuntoDeVentaStock;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Optional;
+
 /**
  *
  * @author DELL
@@ -13,10 +29,44 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
     /**
      * Creates new form PanelPuntoDeVenta
      */
-    public PanelPuntoDeVenta() {
+    public PanelPuntoDeVenta(SesionUsuario sesionUsuario,
+                             ControlPuntoDeVenta accionesPuntoDeVenta,
+                             BuscableEnInventario buscador) {
         initComponents();
+        this.sesionUsuario = sesionUsuario;
+        this.accionesPuntoDeVenta = accionesPuntoDeVenta;
+        this.buscador = buscador;
+        refreshTable();
+        totalResultLabel.setText("");
     }
 
+    private ObjectTableModel<PuntoDeVentaProducto> mainModel;
+    private final BuscableEnInventario buscador;
+    private final SesionUsuario sesionUsuario;
+    private final ControlPuntoDeVenta accionesPuntoDeVenta;
+    private PuntoDeVentaStock stockActual;
+
+    private void setCurrentStock(PuntoDeVentaStock stock) {
+        stockActual = stock;
+        refreshTable(accionesPuntoDeVenta.pullProductosFrom(stockActual));
+    }
+
+    private void refreshTable() {
+        refreshTable(new ObjectTableModel<>(
+                PuntoDeVentaProducto.class,
+                new ArrayList<>()
+        ));
+    }
+
+    private void refreshTable(ObjectTableModel<PuntoDeVentaProducto> model) {
+        TablaVentas.setModel(mainModel = model);
+        if (stockActual != null) {
+            accionesPuntoDeVenta.getTotal(stockActual)
+                    .ifPresent(d -> totalResultLabel.setText(String.valueOf(d)));
+        } else {
+            totalResultLabel.setText("");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,13 +76,7 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        botonEliminarProducto1 = new javax.swing.JButton();
-        botonEliminarProducto3 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
         botonVerPendientes = new javax.swing.JButton();
-        botonVerEstadoEditores = new javax.swing.JButton();
         botonCrearTransaccion = new javax.swing.JButton();
         botonCancelarActual = new javax.swing.JButton();
         botonAnadirProducto = new javax.swing.JButton();
@@ -42,47 +86,24 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         TablaVentas = new javax.swing.JTable();
         labelPuntodeVenta = new javax.swing.JLabel();
-        LabelTotal = new javax.swing.JLabel();
-
-        botonEliminarProducto1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        botonEliminarProducto1.setText("Eliminar Producto");
-
-        botonEliminarProducto3.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        botonEliminarProducto3.setText("Eliminar Producto");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Punto de Venta");
-        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        totalLabel = new javax.swing.JLabel();
+        totalResultLabel = new javax.swing.JLabel();
 
         botonVerPendientes.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         botonVerPendientes.setText("Ver Pendientes");
-
-        botonVerEstadoEditores.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        botonVerEstadoEditores.setText("<html> Ver Estado <br>de Editores <html>"); // NOI18N
-        botonVerEstadoEditores.setActionCommand("Ver Estado de Editores");
-        botonVerEstadoEditores.addActionListener(new java.awt.event.ActionListener() {
+        botonVerPendientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonVerEstadoEditoresActionPerformed(evt);
+                botonVerPendientesActionPerformed(evt);
             }
         });
 
         botonCrearTransaccion.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         botonCrearTransaccion.setText("Crear Transaccion");
+        botonCrearTransaccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCrearTransaccionActionPerformed(evt);
+            }
+        });
 
         botonCancelarActual.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         botonCancelarActual.setText("Cancelar Pedudo");
@@ -94,12 +115,27 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
 
         botonAnadirProducto.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         botonAnadirProducto.setText("Añadir Porducto");
+        botonAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAnadirProductoActionPerformed(evt);
+            }
+        });
 
         botonEliminarProducto2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         botonEliminarProducto2.setText("Eliminar Producto");
+        botonEliminarProducto2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEliminarProducto2ActionPerformed(evt);
+            }
+        });
 
         botonConfirmarPedido.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         botonConfirmarPedido.setText("Confirmar Pedido");
+        botonConfirmarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonConfirmarPedidoActionPerformed(evt);
+            }
+        });
 
         TablaVentas.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         TablaVentas.setModel(new javax.swing.table.DefaultTableModel(
@@ -120,13 +156,11 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
         labelPuntodeVenta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         labelPuntodeVenta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        LabelTotal.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        LabelTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelTotal.setText("Total:");
-        LabelTotal.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        LabelTotal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        LabelTotal.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        LabelTotal.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        totalLabel.setText("Total");
+
+        totalResultLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalResultLabel.setText("TEMPLATE");
+        totalResultLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -136,27 +170,30 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(botonCrearTransaccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonVerPendientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(botonCancelarActual))
+                                    .addComponent(botonVerPendientes, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                    .addComponent(botonCancelarActual)
+                                    .addComponent(botonEliminarProducto2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(botonConfirmarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                                .addGap(126, 126, 126)
-                                .addComponent(LabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(17, 17, 17))
+                                    .addComponent(botonConfirmarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                    .addGap(160, 160, 160)
+                                                    .addComponent(totalLabel)
+                                                    .addGap(48, 48, 48))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(totalResultLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addContainerGap())))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(botonVerEstadoEditores, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(botonEliminarProducto2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addComponent(botonAnadirProducto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(botonCrearTransaccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(botonAnadirProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGap(154, 154, 154)
                                 .addComponent(labelPuntodeVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addContainerGap())))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane3)
                         .addContainerGap())))
@@ -167,12 +204,11 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonVerPendientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonVerEstadoEditores, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(botonVerPendientes, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(botonCrearTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(botonCrearTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonAnadirProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonEliminarProducto2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(19, 19, 19))
@@ -181,46 +217,108 @@ public class PanelPuntoDeVenta extends javax.swing.JPanel {
                         .addComponent(labelPuntodeVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(totalLabel)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(botonConfirmarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(botonCancelarActual, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(LabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(10, Short.MAX_VALUE))))
+                            .addComponent(botonCancelarActual, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(totalResultLabel))
+                    .addGap(21, 21, 21))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonCancelarActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActualActionPerformed
-        // TODO add your handling code here:
+        if (stockActual != null) {
+            accionesPuntoDeVenta.removeStock(stockActual);
+            stockActual = null;
+        }
+        refreshTable();
+        totalResultLabel.setText("");
     }//GEN-LAST:event_botonCancelarActualActionPerformed
 
-    private void botonVerEstadoEditoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerEstadoEditoresActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonVerEstadoEditoresActionPerformed
+    private void botonCrearTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearTransaccionActionPerformed
+        setCurrentStock(accionesPuntoDeVenta.createStock(
+                sesionUsuario.getLoggedUser(),
+                Timestamp.from(Instant.now())
+        ));
+    }//GEN-LAST:event_botonCrearTransaccionActionPerformed
+
+    private void botonVerPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerPendientesActionPerformed
+        new PendientesStockPuntoDeVentaDialog(
+                TablaVentas, true,
+                s -> {
+                    setCurrentStock(s);
+                    return Optional.empty();
+                },
+                accionesPuntoDeVenta.pullPendienteStock(sesionUsuario.getLoggedUser())
+        ).setVisible(true);
+    }//GEN-LAST:event_botonVerPendientesActionPerformed
+
+    private void botonConfirmarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConfirmarPedidoActionPerformed
+        if (stockActual != null) {
+            Optional<String> error = accionesPuntoDeVenta.confirmStock(stockActual);
+            if (error.isPresent()) {
+                ReportInView.error(this, error.get());
+                return;
+            }
+            refreshTable(new ObjectTableModel<>(PuntoDeVentaProducto.class, new ArrayList<>()));
+            totalResultLabel.setText("");
+        }
+    }//GEN-LAST:event_botonConfirmarPedidoActionPerformed
+
+    private void botonAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnadirProductoActionPerformed
+        if (stockActual == null) {
+            ReportInView.error(this, "Debe de seleccionar o crear alguna transaccion");
+            return;
+        }
+        new MenuAnadirProductosDialog(
+                this, true,
+                prod -> {
+                    Optional<String> error;
+                    // PARANOIA
+                    if (stockActual != null) {
+                        error = accionesPuntoDeVenta.addProduct(stockActual, prod);
+                        refreshTable(accionesPuntoDeVenta.pullProductosFrom(stockActual));
+                    } else {
+                        // Okay, let's be real cautious
+                        error = Optional.of("Debe de seleccionar o crear alguna transaccion");
+                    }
+                    return error;
+                },
+                buscador
+        ).setVisible(true);
+    }//GEN-LAST:event_botonAnadirProductoActionPerformed
+
+    private void botonEliminarProducto2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarProducto2ActionPerformed
+        int index = TableUtils.getSelectedIndex(TablaVentas, "Debe de seleccionar algun producto");
+        if (index == -1) {
+            return;
+        }
+        // Cautious
+        if (stockActual != null) {
+            Optional<String> error = accionesPuntoDeVenta.removeProduct(mainModel.getRow(index));
+            if (error.isPresent()) {
+                ReportInView.error(this, error.get());
+            } else {
+                refreshTable(accionesPuntoDeVenta.pullProductosFrom(stockActual));
+            }
+        }
+    }//GEN-LAST:event_botonEliminarProducto2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabelTotal;
     private javax.swing.JTable TablaVentas;
     private javax.swing.JButton botonAnadirProducto;
     private javax.swing.JButton botonCancelarActual;
     private javax.swing.JButton botonConfirmarPedido;
     private javax.swing.JButton botonCrearTransaccion;
-    private javax.swing.JButton botonEliminarProducto1;
     private javax.swing.JButton botonEliminarProducto2;
-    private javax.swing.JButton botonEliminarProducto3;
-    private javax.swing.JButton botonVerEstadoEditores;
     private javax.swing.JButton botonVerPendientes;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelPuntodeVenta;
+    private javax.swing.JLabel totalLabel;
+    private javax.swing.JLabel totalResultLabel;
     // End of variables declaration//GEN-END:variables
 }

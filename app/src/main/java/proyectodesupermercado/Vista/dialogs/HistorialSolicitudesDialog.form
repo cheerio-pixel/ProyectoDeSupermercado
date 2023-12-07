@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
@@ -24,104 +24,67 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="1" attributes="0">
+              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField1" alignment="0" min="-2" pref="290" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="134" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="fechaInicioDatePicker" min="-2" pref="209" max="-2" attributes="0"/>
+                                  <Component id="isSelectedCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="89" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <Component id="fechaFinalDatePicker" min="-2" max="-2" attributes="0"/>
+                          <Component id="buscarButton" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="589" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="207" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="0" pref="18" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="8" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="jTextField1" min="-2" pref="32" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButton1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="jCheckBox1" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="fechaInicioDatePicker" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fechaFinalDatePicker" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="buscarButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="isSelectedCheckbox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="8" max="32767" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="228" max="-2" attributes="0"/>
-              <EmptySpace pref="21" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="267" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="jLabel1">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI Emoji" size="18" style="1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Lista de Ordenes Recientes"/>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder/>
-          </Border>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextField1">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
-            <BevelBorder>
-              <Color PropertyName="highlightOuter" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-              <Color PropertyName="highlightInner" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-              <Color PropertyName="shadowOuter" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-              <Color PropertyName="shadowInner" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-            </BevelBorder>
-          </Border>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Buscar"/>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
-            <BevelBorder>
-              <Color PropertyName="highlightOuter" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-              <Color PropertyName="highlightInner" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-              <Color PropertyName="shadowInner" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-            </BevelBorder>
-          </Border>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Mostrar no Aceptados"/>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
-            <BevelBorder/>
-          </Border>
-        </Property>
-      </Properties>
-    </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -145,5 +108,46 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="fechaInicioDatePicker">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI Emoji" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Lista de Ordenes Recientes"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+            <EmptyBorder/>
+          </Border>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="fechaFinalDatePicker">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Fecha de inicio"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Fecha de finalizacion"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="buscarButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscarButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="isSelectedCheckbox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ha sido aceptado"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

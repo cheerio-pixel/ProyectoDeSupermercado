@@ -4,9 +4,20 @@
  */
 package proyectodesupermercado.Vista.dialogs;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.interfaces.ControlHistorialSolicitud;
+import proyectodesupermercado.Vista.interfaces.ControlManejoSolicitudes;
+import proyectodesupermercado.Vista.utils.PopupSolicitudesOnDoubleClick;
+import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.SolicitudCompra;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * @author cheerio-pixel
@@ -16,11 +27,32 @@ public class HistorialSolicitudesDialog extends javax.swing.JDialog {
     /**
      * Creates new form HistorialSolicitudesDialog
      */
-    public HistorialSolicitudesDialog(JComponent parent, boolean modal) {
+    public HistorialSolicitudesDialog(JComponent parent, boolean modal,
+                                      ControlHistorialSolicitud controlHistorialSolicitud,
+                                      ControlManejoSolicitudes controlManejoSolicitudes) {
         super((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent), modal);
         setLocationRelativeTo(parent);
         initComponents();
+        this.controlHistorialSolicitud = controlHistorialSolicitud;
+        refreshModel(controlHistorialSolicitud.refreshInitialModel());
+        jTable1.addMouseListener(
+                PopupSolicitudesOnDoubleClick.create(
+                        this, jTable1, mainModel, controlManejoSolicitudes
+                )
+        );
     }
+
+    private final ControlHistorialSolicitud controlHistorialSolicitud;
+    private ObjectTableModel<SolicitudCompra> mainModel;
+
+    private void refreshModel(ObjectTableModel<SolicitudCompra> model) {
+        jTable1.setModel(mainModel = model);
+    }
+
+    private boolean dateIsInvalid() {
+        return fechaInicioDatePicker.getDate().isAfter(fechaFinalDatePicker.getDate());
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,26 +63,17 @@ public class HistorialSolicitudesDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        fechaInicioDatePicker = new com.github.lgooddatepicker.components.DatePicker();
+        jLabel1 = new javax.swing.JLabel();
+        fechaFinalDatePicker = new com.github.lgooddatepicker.components.DatePicker();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        buscarButton = new javax.swing.JButton();
+        isSelectedCheckbox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
-        jLabel1.setText("Lista de Ordenes Recientes");
-        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        jTextField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.gray, java.awt.Color.gray, java.awt.Color.gray));
-
-        jButton1.setText("Buscar");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.gray, null, java.awt.Color.gray));
-
-        jCheckBox1.setText("Mostrar no Aceptados");
-        jCheckBox1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
@@ -62,54 +85,113 @@ public class HistorialSolicitudesDialog extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
+        jLabel1.setText("Lista de Ordenes Recientes");
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        jLabel2.setText("Fecha de inicio");
+        jLabel2.setToolTipText("");
+
+        jLabel3.setText("Fecha de finalizacion");
+
+        buscarButton.setText("Buscar");
+        buscarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarButtonActionPerformed(evt);
+            }
+        });
+
+        isSelectedCheckbox.setText("Ha sido aceptado");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGap(17, 17, 17)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addGap(17, 17, 17)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel1)
-                                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jCheckBox1))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                .addGap(0, 6, Short.MAX_VALUE)
+                                                                .addComponent(jLabel2)
+                                                                .addGap(134, 134, 134))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(fechaInicioDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(isSelectedCheckbox))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel3)
+                                                        .addComponent(fechaFinalDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 18, Short.MAX_VALUE))
+                                                .addComponent(jLabel1)
+                                                .addGap(207, 207, 207)))
+                                .addGap(0, 8, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(26, 26, 26)
-                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(fechaInicioDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(fechaFinalDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(buscarButton)
+                                        .addComponent(isSelectedCheckbox))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
-                                .addGap(4, 4, 4)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(21, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
+        if (fechaFinalDatePicker.getDate() == null &&
+                fechaInicioDatePicker.getDate() == null) {
+            refreshModel(controlHistorialSolicitud.refreshInitialModel());
+        } else if (fechaFinalDatePicker.getDate() != null
+                && fechaInicioDatePicker.getDate() != null
+                && dateIsInvalid()) {
+            ReportInView.error(this, "Las fecha de incio esta despues de la fecha de finalizacion.");
+        } else {
+            refreshModel(
+                    controlHistorialSolicitud.searchByFields(
+                            Optional.of(fechaInicioDatePicker)
+                                    .map(DatePicker::getDate)
+                                    .map(LocalDate::atStartOfDay)
+                                    .map(Timestamp::valueOf)
+                                    .orElse(null),
+                            Optional.of(fechaFinalDatePicker)
+                                    .map(DatePicker::getDate)
+                                    .map(LocalDate::atStartOfDay)
+                                    .map(Timestamp::valueOf)
+                                    .orElse(null),
+                            isSelectedCheckbox.isSelected()
+                    )
+            );
+        }
+    }//GEN-LAST:event_buscarButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton buscarButton;
+    private com.github.lgooddatepicker.components.DatePicker fechaFinalDatePicker;
+    private com.github.lgooddatepicker.components.DatePicker fechaInicioDatePicker;
+    private javax.swing.JCheckBox isSelectedCheckbox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

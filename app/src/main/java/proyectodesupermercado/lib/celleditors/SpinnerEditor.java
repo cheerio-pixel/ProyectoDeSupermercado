@@ -14,7 +14,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.util.EventObject;
 
-public class SpinnerEditor extends DefaultCellEditor implements TableCellRenderer
+public class SpinnerEditor extends DefaultCellEditor
 {
     JSpinner spinner;
     JSpinner.DefaultEditor editor;
@@ -24,7 +24,7 @@ public class SpinnerEditor extends DefaultCellEditor implements TableCellRendere
     public static void setEditorAndRendererOnTable(JTable table, int index, SpinnerEditor editor) {
         TableColumn column = table.getColumn(index);
         column.setCellEditor(editor);
-        column.setCellRenderer(editor);
+//        column.setCellRenderer(editor);
     }
 
     // Initializes the spinner.
@@ -88,11 +88,5 @@ public class SpinnerEditor extends DefaultCellEditor implements TableCellRendere
                     "Invalid value, discarding.");
         }
         return super.stopCellEditing();
-    }
-
-    @Override
-    public Component getTableCellRendererComponent(JTable jTable, Object o, boolean b, boolean b1, int i, int i1) {
-        spinner.setValue(o);
-        return spinner;
     }
 }

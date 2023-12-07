@@ -4,11 +4,19 @@
  */
 package proyectodesupermercado.Vista.dialogs;
 
-import javax.swing.DefaultListCellRenderer;
+import proyectodesupermercado.Vista.ReportInView;
+import proyectodesupermercado.Vista.TableUtils;
+import proyectodesupermercado.Vista.interfaces.BuscableEnInventario;
+import proyectodesupermercado.Vista.interfaces.DialogSource;
+import proyectodesupermercado.lib.tableModel.ObjectTableModel;
+import proyectodesupermercado.modelo.InventarioProducto;
+import proyectodesupermercado.modelo.PuntoDeVentaProducto;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.SwingConstants;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import java.util.Optional;
 
 /**
  *
@@ -16,31 +24,50 @@ import javax.swing.SwingUtilities;
  */
 public class MenuAnadirProductosDialog extends javax.swing.JDialog {
 
-    private javax.swing.JPanel jPanel1;
 
     /**
      * Creates new form MenuAnadirProductosDialog
      */
-    public MenuAnadirProductosDialog(JComponent parent, boolean modal) {
+    public MenuAnadirProductosDialog(JComponent parent, boolean modal,
+                                     DialogSource<PuntoDeVentaProducto> source,
+                                     BuscableEnInventario buscadorDeInventario) {
         super((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent), modal);
         setLocationRelativeTo(parent);
         initComponents();
+        this.source = source;
+        this.buscadorDeInventario = buscadorDeInventario;
 
-        DefaultListCellRenderer render = (DefaultListCellRenderer) listaProductos.getCellRenderer();
-        render.setHorizontalAlignment(SwingConstants.CENTER);
+        refreshTable(buscadorDeInventario.refreshInitialModel());
+
+        inventarioTabla.getSelectionModel().addListSelectionListener(e -> {
+            int index = TableUtils.getSelectedIndex(inventarioTabla, "");
+            if (index == -1) {
+                return;
+            }
+            cantidadSpinner.setModel(
+                    new SpinnerNumberModel(
+                            1, 1,
+                            mainModel.getRow(index).getCantidad(), 1
+                    )
+            );
+        });
     }
 
-    private void botonBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBusquedaActionPerformed
+    private final DialogSource<PuntoDeVentaProducto> source;
+    private final BuscableEnInventario buscadorDeInventario;
+    private ObjectTableModel<InventarioProducto> mainModel;
 
-    }//GEN-LAST:event_botonBusquedaActionPerformed
+    private void refreshTable(ObjectTableModel<InventarioProducto> model) {
+        inventarioTabla.setModel(mainModel = model);
+    }
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonBusqueda;
-    private javax.swing.JButton botonCancelar;
-    private javax.swing.JButton botonSeleccionar;
-    private javax.swing.JLabel jLabel1;
-
+    private void doSearch() {
+        if (busquedaTextfield.getText().isBlank()) {
+            refreshTable(buscadorDeInventario.refreshInitialModel());
+        } else {
+            refreshTable(buscadorDeInventario.search(busquedaTextfield.getText()));
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,119 +77,139 @@ public class MenuAnadirProductosDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        botonBusqueda = new javax.swing.JButton();
-        textFiledBusqueda = new javax.swing.JTextField();
+        busquedaTextfield = new javax.swing.JTextField();
+        buscarButton = new javax.swing.JButton();
+        cancelarButton = new javax.swing.JButton();
+        sendButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaProductos = new javax.swing.JList<>();
-        spinnerProductos = new javax.swing.JSpinner();
-        botonCancelar = new javax.swing.JButton();
-        botonSeleccionar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        inventarioTabla = new javax.swing.JTable();
+        cantidadSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        botonBusqueda.setText("Buscar");
-        botonBusqueda.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonBusqueda.addActionListener(new java.awt.event.ActionListener() {
+        busquedaTextfield.setColumns(9);
+        busquedaTextfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonBusquedaActionPerformed(evt);
+                busquedaTextfieldActionPerformed(evt);
             }
         });
 
-        textFiledBusqueda.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        buscarButton.setText("Buscar");
+        buscarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarButtonActionPerformed(evt);
+            }
+        });
 
-        listaProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        listaProductos.setDragEnabled(true);
-        jScrollPane1.setViewportView(listaProductos);
+        cancelarButton.setText("Cancelar");
+        cancelarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarButtonActionPerformed(evt);
+            }
+        });
 
-        spinnerProductos.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        sendButton.setText("Enviar");
+        sendButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendButtonActionPerformed(evt);
+            }
+        });
 
-        botonCancelar.setText("Cancelar");
-
-        botonSeleccionar.setText("Selecccionar");
-
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Buscador");
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(textFiledBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botonBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(spinnerProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71))
-        );
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonBusqueda)
-                    .addComponent(textFiledBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(spinnerProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonCancelar)
-                    .addComponent(botonSeleccionar))
-                .addContainerGap(17, Short.MAX_VALUE))
-        );
+        inventarioTabla.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null}
+                },
+                new String[]{
+                        "Title 1", "Title 2", "Title 3", "Title 4"
+                }
+        ));
+        jScrollPane1.setViewportView(inventarioTabla);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 275, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(cancelarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(sendButton, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE))
+                                                        .addComponent(buscarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(busquedaTextfield))
+                                                .addContainerGap())
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(6, 6, 6)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                                                        .addComponent(cantidadSpinner))
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 454, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(busquedaTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buscarButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cantidadSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(sendButton, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                                        .addComponent(cancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void busquedaTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaTextfieldActionPerformed
+        doSearch();
+    }//GEN-LAST:event_busquedaTextfieldActionPerformed
+
+    private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
+        doSearch();
+    }//GEN-LAST:event_buscarButtonActionPerformed
+
+    private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
+        dispose();
+    }//GEN-LAST:event_cancelarButtonActionPerformed
+
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
+        int index = TableUtils.getSelectedIndex(inventarioTabla, "Debe de selecionar algun producto");
+        if (index == -1) {
+            return;
+        }
+        InventarioProducto row = mainModel.getRow(index);
+        Optional<String> error = source.accept(
+                new PuntoDeVentaProducto(
+                        row.getIdProductoRegistro(),
+                        (int) cantidadSpinner.getValue()
+                )
+        );
+        if (error.isPresent()) {
+            ReportInView.error(this, error.get());
+        } else {
+            dispose();
+        }
+    }//GEN-LAST:event_sendButtonActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buscarButton;
+    private javax.swing.JTextField busquedaTextfield;
+    private javax.swing.JButton cancelarButton;
+    private javax.swing.JSpinner cantidadSpinner;
+    private javax.swing.JTable inventarioTabla;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> listaProductos;
-    private javax.swing.JSpinner spinnerProductos;
-    private javax.swing.JTextField textFiledBusqueda;
+    private javax.swing.JButton sendButton;
     // End of variables declaration//GEN-END:variables
 }

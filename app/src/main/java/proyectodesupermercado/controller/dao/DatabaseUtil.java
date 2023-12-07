@@ -13,6 +13,6 @@ public final class DatabaseUtil {
         if (rs.next()) {
             return rs.getInt("id");
         }
-        return -1;
+        return 0;
     }
 }
