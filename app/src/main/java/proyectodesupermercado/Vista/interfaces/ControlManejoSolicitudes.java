@@ -1,8 +1,8 @@
 package proyectodesupermercado.Vista.interfaces;
 
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
-import proyectodesupermercado.modelo.NotificacionPendiente;
 import proyectodesupermercado.modelo.SolicitudCompra;
+import proyectodesupermercado.modelo.SolicitudCompraProducto;
 import proyectodesupermercado.modelo.Usuario;
 
 import java.sql.Timestamp;
@@ -19,7 +19,7 @@ public interface ControlManejoSolicitudes {
 
     Optional<Timestamp> getDateOfLastNotification(Usuario usuario);
 
-    ;
+    List<SolicitudCompraProducto> getProductsOf(SolicitudCompra solicitudCompra);
 
     OptionalInt getLimit(Usuario usuario);
 

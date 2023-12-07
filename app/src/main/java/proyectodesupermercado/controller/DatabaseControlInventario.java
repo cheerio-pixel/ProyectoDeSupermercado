@@ -2,30 +2,17 @@ package proyectodesupermercado.controller;
 
 import proyectodesupermercado.Vista.interfaces.ControlInventario;
 import proyectodesupermercado.controller.dao.InventarioProductoDAO;
-import proyectodesupermercado.lib.tableModel.ObjectTableModel;
 import proyectodesupermercado.modelo.InventarioProducto;
 
-import java.util.Comparator;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class
-DatabaseControlInventario implements ControlInventario {
-    private final InventarioProductoDAO inventarioProductoDAO;
+DatabaseControlInventario extends DatabaseInventarioBuscador implements ControlInventario {
 
     public DatabaseControlInventario(InventarioProductoDAO inventarioProductoDAO) {
-        this.inventarioProductoDAO = inventarioProductoDAO;
+        super(inventarioProductoDAO);
     }
 
-    @Override
-    public ObjectTableModel<InventarioProducto> search(String prompt) {
-        return new ObjectTableModel<>(
-                InventarioProducto.class,
-                inventarioProductoDAO.searchByName(prompt).stream()
-                        .sorted(Comparator.comparingInt(InventarioProducto::getCantidad))
-                        .collect(Collectors.toList())
-        );
-    }
 
     @Override
     public Optional<String> editProduct(InventarioProducto producto) {
@@ -39,15 +26,5 @@ DatabaseControlInventario implements ControlInventario {
         producto.setCantidad(-1);
         inventarioProductoDAO.update(producto.getId(), producto);
         return Optional.empty();
-    }
-
-    @Override
-    public ObjectTableModel<InventarioProducto> refreshInitialModel() {
-        return new ObjectTableModel<>(
-                InventarioProducto.class,
-                inventarioProductoDAO.listAll().stream()
-                        .sorted(Comparator.comparingInt(InventarioProducto::getCantidad))
-                        .collect(Collectors.toList())
-        );
     }
 }

@@ -1,6 +1,5 @@
 package proyectodesupermercado.controller.dao.mysql;
 
-import com.mysql.jdbc.NotImplemented;
 import proyectodesupermercado.controller.ConditionsBuilder;
 import proyectodesupermercado.controller.dao.DatabaseUtil;
 import proyectodesupermercado.controller.dao.SolicitudesDAO;
@@ -21,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class SolicitudesMySQLDAO implements SolicitudesDAO {
-    private DatabaseEnvironment dbEnv;
+    private final DatabaseEnvironment dbEnv;
 
     public SolicitudesMySQLDAO(DatabaseEnvironment dbEnv) {
         this.dbEnv = dbEnv;
@@ -31,7 +30,7 @@ public class SolicitudesMySQLDAO implements SolicitudesDAO {
     public Set<SolicitudCompra> listAll() {
         String query = "SELECT * FROM Solicitud ORDER BY fechaDeCreacion DESC LIMIT 50";
         try (Connection conn = dbEnv.getConnection();
-             Statement statement = conn.createStatement();) {
+             Statement statement = conn.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
             Set<SolicitudCompra> res = new HashSet<>();
             while (rs.next()) {
@@ -92,13 +91,40 @@ public class SolicitudesMySQLDAO implements SolicitudesDAO {
     }
 
     @Override
+    public List<SolicitudCompraProducto> listAllProductsOf(Object id) {
+        String query = "SELECT * FROM SolicitudProducto " +
+                "INNER JOIN ProductoRegistro " +
+                "ON ProductoRegistro.id = SolicitudProducto.idProductoRegistro " +
+                "WHERE SolicitudProducto.idSolicitud = ?";
+        try (Connection conn = dbEnv.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setObject(1, id);
+            ResultSet rs = statement.executeQuery();
+            List<SolicitudCompraProducto> res = new ArrayList<>();
+            while (rs.next()) {
+                res.add(
+                        new SolicitudCompraProducto(
+                                rs.getInt("ProductoRegistro.id"),
+                                rs.getString("ProductoRegistro.nombre"),
+                                rs.getInt("SolicitudProducto.cantidad"),
+                                rs.getDouble("SolicitudProducto.precioCompraPorUnidad")
+                        )
+                );
+            }
+            return res;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void insert(SolicitudCompra object) {
         String queryNewSolicitud = "INSERT INTO Solicitud(id, fechaDeCreacion) VALUES (?, ?)";
         String queryRegisterProductos = "INSERT INTO SolicitudProducto(id, idProductoRegistro, idSolicitud, " +
                 "cantidad, precioCompraPorUnidad) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = dbEnv.getConnection();) {
+        try (Connection conn = dbEnv.getConnection()) {
             try (PreparedStatement statementNewSolicitud = conn.prepareStatement(queryNewSolicitud);
                  PreparedStatement statementRegisterProductos = conn.prepareStatement(queryRegisterProductos)) {
                 conn.setAutoCommit(false);

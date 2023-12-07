@@ -2,7 +2,6 @@ package proyectodesupermercado.modelo;
 
 import proyectodesupermercado.lib.tableModel.TableModelColumn;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -10,7 +9,7 @@ public class SolicitudCompra {
     @TableModelColumn(name = "ID", index = 1)
     private long id;
     @TableModelColumn(name = "Creacion", index = 2)
-    private Timestamp fecha;
+    private final Timestamp fecha;
     @TableModelColumn(name = "Acepatdo", index = 3)
     private boolean aceptado;
     private List<SolicitudCompraProducto> productos;
@@ -32,5 +31,9 @@ public class SolicitudCompra {
 
     public List<SolicitudCompraProducto> getProductos() {
         return productos;
+    }
+
+    public long getId() {
+        return id;
     }
 }

@@ -1,12 +1,10 @@
 package proyectodesupermercado.controller.dao.mysql;
 
-import proyectodesupermercado.controller.ConditionsBuilder;
 import proyectodesupermercado.controller.dao.NotificacionesDAO;
 import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
 import proyectodesupermercado.modelo.NotificacionPendiente;
 import proyectodesupermercado.modelo.Usuario;
 
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,14 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class NotificacionesMySQLDAO implements NotificacionesDAO {
-    private DatabaseEnvironment dbEnv;
+    private final DatabaseEnvironment dbEnv;
 
     public NotificacionesMySQLDAO(DatabaseEnvironment dbEnv) {
         this.dbEnv = dbEnv;
     }
-
     @Override
-    public List<NotificacionPendiente> notificationsOf(Usuario usuario) {
+    public List<NotificacionPendiente> pullFromUser(Usuario usuario) {
         long userId;
         if (usuario != null) {
             userId = usuario.getId();
@@ -69,7 +66,7 @@ public class NotificacionesMySQLDAO implements NotificacionesDAO {
         String query = "SELECT limite FROM LimiteDeInventario " +
                 "WHERE idUsuario = ?";
         try (Connection conn = dbEnv.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query);) {
+             PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setLong(1, usuario.getId());
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -86,7 +83,7 @@ public class NotificacionesMySQLDAO implements NotificacionesDAO {
         String query = "SELECT fechaDeCreacion FROM NoficacionDeCompra " +
                 "WHERE idUsuario = ? ORDER BY fechaDeCreacion DESC LIMIT 1";
         try (Connection conn = dbEnv.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query);) {
+             PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setLong(1, usuario.getId());
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -108,7 +105,7 @@ public class NotificacionesMySQLDAO implements NotificacionesDAO {
             query = "DELETE FROM LimiteDeInventario WHERE idUsuario = ?";
         }
         try (Connection conn = dbEnv.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query);) {
+             PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setLong(1, usuario.getId());
             if (activate) {
                 statement.setInt(2, limit);

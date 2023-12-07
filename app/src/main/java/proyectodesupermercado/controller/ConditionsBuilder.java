@@ -67,12 +67,35 @@ public class ConditionsBuilder {
         return this;
     }
 
+    public ConditionsBuilder addConditionOrElse(
+            boolean conditional,
+            String conditionIf,
+            List<Object> paramsIf,
+            String conditionElse,
+            List<Object> paramsElse
+    ) {
+        if (conditional) {
+            addCondition(conditionIf, paramsElse);
+        } else {
+            addCondition(conditionElse, paramsElse);
+        }
+        return this;
+    }
+
     public ConditionsBuilder addCondition(
             String condition,
             Object... params
     ) {
+        addCondition(condition, List.of(params));
+        return this;
+    }
+
+    public ConditionsBuilder addCondition(
+            String condition,
+            List<Object> params
+    ) {
         conditions.add(condition);
-        this.params.addAll(List.of(params));
+        this.params.addAll(params);
         return this;
     }
 }

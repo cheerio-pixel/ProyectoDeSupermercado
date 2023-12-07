@@ -7,6 +7,8 @@ package proyectodesupermercado.Vista.dialogs;
 import com.github.lgooddatepicker.components.DatePicker;
 import proyectodesupermercado.Vista.ReportInView;
 import proyectodesupermercado.Vista.interfaces.ControlHistorialSolicitud;
+import proyectodesupermercado.Vista.interfaces.ControlManejoSolicitudes;
+import proyectodesupermercado.Vista.utils.PopupSolicitudesOnDoubleClick;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
 import proyectodesupermercado.modelo.SolicitudCompra;
 
@@ -26,15 +28,21 @@ public class HistorialSolicitudesDialog extends javax.swing.JDialog {
      * Creates new form HistorialSolicitudesDialog
      */
     public HistorialSolicitudesDialog(JComponent parent, boolean modal,
-                                      ControlHistorialSolicitud controlHistorialSolicitud) {
+                                      ControlHistorialSolicitud controlHistorialSolicitud,
+                                      ControlManejoSolicitudes controlManejoSolicitudes) {
         super((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent), modal);
         setLocationRelativeTo(parent);
         initComponents();
         this.controlHistorialSolicitud = controlHistorialSolicitud;
         refreshModel(controlHistorialSolicitud.refreshInitialModel());
+        jTable1.addMouseListener(
+                PopupSolicitudesOnDoubleClick.create(
+                        this, jTable1, mainModel, controlManejoSolicitudes
+                )
+        );
     }
 
-    private ControlHistorialSolicitud controlHistorialSolicitud;
+    private final ControlHistorialSolicitud controlHistorialSolicitud;
     private ObjectTableModel<SolicitudCompra> mainModel;
 
     private void refreshModel(ObjectTableModel<SolicitudCompra> model) {

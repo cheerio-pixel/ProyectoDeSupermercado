@@ -12,14 +12,12 @@ import proyectodesupermercado.Vista.interfaces.ControlHistorialSolicitud;
 import proyectodesupermercado.Vista.interfaces.ControlListaPendientes;
 import proyectodesupermercado.Vista.interfaces.ControlManejoSolicitudes;
 import proyectodesupermercado.Vista.interfaces.SesionUsuario;
+import proyectodesupermercado.Vista.utils.PopupSolicitudesOnDoubleClick;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
 import proyectodesupermercado.modelo.SolicitudCompra;
 import proyectodesupermercado.modelo.SolicitudCompraProducto;
-import proyectodesupermercado.modelo.Usuario;
 
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -27,8 +25,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -74,18 +70,27 @@ public class ControlSolicitudes extends javax.swing.JPanel {
         }
         toggleActualizarButton();
         togglePoller();
+
+        mainTable.addMouseListener(
+                PopupSolicitudesOnDoubleClick.create(
+                        this,
+                        mainTable,
+                        mainModel,
+                        accionesManejoSolicitudes
+                )
+        );
     }
 
-    private ExecutorService pool;
-    private SesionUsuario sesionUsuario;
-    private ControlManejoSolicitudes accionesManejoSolicitudes;
-    private ControlListaPendientes accionesListaPendiente;
-    private BuscableEnInventario buscadorDeInventario;
+    private final ExecutorService pool;
+    private final SesionUsuario sesionUsuario;
+    private final ControlManejoSolicitudes accionesManejoSolicitudes;
+    private final ControlListaPendientes accionesListaPendiente;
+    private final BuscableEnInventario buscadorDeInventario;
     private ObjectTableModel<SolicitudCompra> mainModel;
-    private ControlHistorialSolicitud accionesHistorial;
+    private final ControlHistorialSolicitud accionesHistorial;
 
 
-    private AtomicReference<Timestamp> lastOpenedTimeOfNotifications;
+    private final AtomicReference<Timestamp> lastOpenedTimeOfNotifications;
 
     private void refreshTable(ObjectTableModel<SolicitudCompra> model) {
         mainTable.setModel(mainModel = model);
@@ -298,7 +303,7 @@ public class ControlSolicitudes extends javax.swing.JPanel {
 
     private void abrirHistorialButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirHistorialButtonActionPerformed
         new HistorialSolicitudesDialog(
-                this, true, accionesHistorial
+                this, true, accionesHistorial, accionesManejoSolicitudes
         ).setVisible(true);
     }//GEN-LAST:event_abrirHistorialButtonActionPerformed
 

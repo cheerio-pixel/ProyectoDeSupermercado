@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DatabaseControlListaPendientes implements ControlListaPendientes {
-    private NotificacionesDAO notificacionesDAO;
+    private final NotificacionesDAO notificacionesDAO;
     private List<NotificacionPendiente> notificacionPendientes;
 
     public DatabaseControlListaPendientes(NotificacionesDAO notificacionesDAO) {
@@ -22,7 +22,7 @@ public class DatabaseControlListaPendientes implements ControlListaPendientes {
     public ObjectTableModel<NotificacionPendiente> pullNotifications(Usuario usuario) {
         return new ObjectTableModel<>(
                 NotificacionPendiente.class,
-                notificacionPendientes = new ArrayList<>(notificacionesDAO.notificationsOf(usuario))
+                notificacionPendientes = new ArrayList<>(notificacionesDAO.pullFromUser(usuario))
         );
     }
 

@@ -4,13 +4,11 @@ import proyectodesupermercado.Vista.interfaces.ControlManejoSolicitudes;
 import proyectodesupermercado.controller.dao.NotificacionesDAO;
 import proyectodesupermercado.controller.dao.SolicitudesDAO;
 import proyectodesupermercado.lib.tableModel.ObjectTableModel;
-import proyectodesupermercado.modelo.NotificacionPendiente;
 import proyectodesupermercado.modelo.SolicitudCompra;
+import proyectodesupermercado.modelo.SolicitudCompraProducto;
 import proyectodesupermercado.modelo.Usuario;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -19,8 +17,8 @@ import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 public class DatabaseSolicitudCompra implements ControlManejoSolicitudes {
-    private SolicitudesDAO solicitudesDAO;
-    private NotificacionesDAO notificacionesDAO;
+    private final SolicitudesDAO solicitudesDAO;
+    private final NotificacionesDAO notificacionesDAO;
 
     public DatabaseSolicitudCompra(SolicitudesDAO solicitudesDAO,
                                    NotificacionesDAO notificacionesDAO) {
@@ -52,6 +50,11 @@ public class DatabaseSolicitudCompra implements ControlManejoSolicitudes {
     @Override
     public Optional<Timestamp> getDateOfLastNotification(Usuario usuario) {
         return notificacionesDAO.getLastNotificationDate(usuario);
+    }
+
+    @Override
+    public List<SolicitudCompraProducto> getProductsOf(SolicitudCompra solicitudCompra) {
+        return solicitudesDAO.listAllProductsOf(solicitudCompra.getId());
     }
 
     @Override
