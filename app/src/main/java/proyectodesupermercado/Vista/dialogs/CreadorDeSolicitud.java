@@ -18,10 +18,8 @@ import proyectodesupermercado.modelo.SolicitudCompraProducto;
 
 import javax.swing.JFrame;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-import javax.swing.table.TableColumnModel;
 import java.awt.Component;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -64,8 +62,8 @@ public class CreadorDeSolicitud extends javax.swing.JDialog {
         solicitudTabla.setDefaultRenderer(Double.class, decimalsCellRenderer);
     }
 
-    private BuscableEnInventario buscador;
-    private DialogSource<SolicitudCompra> source;
+    private final BuscableEnInventario buscador;
+    private final DialogSource<SolicitudCompra> source;
     private ObjectTableModel<InventarioProducto> inventarioModel;
     private ObjectTableModel<SolicitudCompraProducto> solicitudModel;
 

@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author cheerio-pixel
@@ -34,6 +35,7 @@ public class HistorialSolicitudesDialog extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
         initComponents();
         this.controlHistorialSolicitud = controlHistorialSolicitud;
+        this.mainModel = new AtomicReference<>();
         refreshModel(controlHistorialSolicitud.refreshInitialModel());
         jTable1.addMouseListener(
                 PopupSolicitudesOnDoubleClick.create(
@@ -43,10 +45,11 @@ public class HistorialSolicitudesDialog extends javax.swing.JDialog {
     }
 
     private final ControlHistorialSolicitud controlHistorialSolicitud;
-    private ObjectTableModel<SolicitudCompra> mainModel;
+    private final AtomicReference<ObjectTableModel<SolicitudCompra>> mainModel;
 
     private void refreshModel(ObjectTableModel<SolicitudCompra> model) {
-        jTable1.setModel(mainModel = model);
+        mainModel.set(model);
+        jTable1.setModel(model);
     }
 
     private boolean dateIsInvalid() {

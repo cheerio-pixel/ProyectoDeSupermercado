@@ -45,6 +45,7 @@ public class ControlSolicitudes extends javax.swing.JPanel {
     ) {
         initComponents();
 
+        this.mainModel = new AtomicReference<>();
         refreshTable(accionesManejoSolicitudes.refreshSolicitudCompra());
 
         this.accionesManejoSolicitudes = accionesManejoSolicitudes;
@@ -86,14 +87,15 @@ public class ControlSolicitudes extends javax.swing.JPanel {
     private final ControlManejoSolicitudes accionesManejoSolicitudes;
     private final ControlListaPendientes accionesListaPendiente;
     private final BuscableEnInventario buscadorDeInventario;
-    private ObjectTableModel<SolicitudCompra> mainModel;
+    private final AtomicReference<ObjectTableModel<SolicitudCompra>> mainModel;
     private final ControlHistorialSolicitud accionesHistorial;
 
 
     private final AtomicReference<Timestamp> lastOpenedTimeOfNotifications;
 
     private void refreshTable(ObjectTableModel<SolicitudCompra> model) {
-        mainTable.setModel(mainModel = model);
+        mainModel.set(model);
+        mainTable.setModel(model);
     }
 
     private CreadorDeSolicitud createNewCreator(List<SolicitudCompraProducto> solicitudCompra) {
@@ -103,9 +105,7 @@ public class ControlSolicitudes extends javax.swing.JPanel {
                 s -> {
                     Optional<String> error = accionesManejoSolicitudes.creaNuevaSolicitud(s);
                     if (error.isEmpty()) {
-                        SwingUtilities.invokeLater(
-                                () -> refreshTable(accionesManejoSolicitudes.refreshSolicitudCompra())
-                        );
+                        refreshTable(accionesManejoSolicitudes.refreshSolicitudCompra());
                     }
                     return error;
                 },

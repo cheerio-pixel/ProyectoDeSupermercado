@@ -6,8 +6,7 @@ import proyectodesupermercado.modelo.InventarioProducto;
 
 import java.util.Optional;
 
-public class
-DatabaseControlInventario extends DatabaseInventarioBuscador implements ControlInventario {
+public class DatabaseControlInventario extends DatabaseInventarioBuscador implements ControlInventario {
 
     public DatabaseControlInventario(InventarioProductoDAO inventarioProductoDAO) {
         super(inventarioProductoDAO);

@@ -42,6 +42,7 @@ import java.util.Map;
 
 public class App {
     public static ThreadLocal<SecureRandom> secureRandom;
+
     static {
         // init mysql driver
         try {
@@ -57,15 +58,16 @@ public class App {
     public static void main(String[] args) {
 
         DatabaseEnvironment dbEnv = new DatabaseEnvironment(
-                "jdbc:mysql://localhost:3306/ProyectoFinal?useSSL=false",
-                "root",
-                "darkwister171531"
+                "jdbc:mysql://localhost:3306/Prog1",
+                "MySQL test",
+                "testtest"
         );
         RolDAO.initRoles(dbEnv);
-        UsuarioMySQLDAO usuarioDAO = new UsuarioMySQLDAO(dbEnv);
-        // Ctrl + / comentar/descomentar netbeans
 
+        UsuarioMySQLDAO usuarioDAO = new UsuarioMySQLDAO(dbEnv);
+        // Descomentar y corre por primera vez para
 //        UsuarioMySQLDAO.initTestUsers(usuarioDAO);
+
 
         SuplidorDAO suplidorDAO = new SuplidorMySQLDAO(dbEnv);
         ControlInventario controlInventario = new DatabaseControlInventario(
@@ -115,8 +117,8 @@ public class App {
                                         controlSolicitudesDAO
                                 ),
                                 sesionUsuario,
-                                new SuplidorMySQLDAO(dbEnv)
-                        ),
+                                new SuplidorMySQLDAO(dbEnv),
+                                dbEnv),
                         Rol.AdminIT, new AdminITViewCreator(
                                 new DatabaseControlUsuario(
                                         new UsuarioMySQLDAO(dbEnv)

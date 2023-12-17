@@ -6,6 +6,7 @@ package proyectodesupermercado.Vista.paneles;
 
 import proyectodesupermercado.Vista.dialogs.New_Suplidor;
 import proyectodesupermercado.controller.dao.mysql.SuplidorMySQLDAO;
+import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
 import proyectodesupermercado.modelo.MiModeloDeTabla;
 
 /**
@@ -16,12 +17,14 @@ public class Gestor_De_Empresas extends javax.swing.JPanel {
   private SuplidorMySQLDAO suplidorDAO;
   private String textoSeleccionado;
   private final MiModeloDeTabla modeloDeTabla;
-  
+
+    private final DatabaseEnvironment dbEnv;
     /**
      * Creates new form Gestor_De_Empresas
      */
-    public Gestor_De_Empresas(SuplidorMySQLDAO suplidorDAO) {
+    public Gestor_De_Empresas(SuplidorMySQLDAO suplidorDAO, DatabaseEnvironment dbEnv) {
         this.suplidorDAO = suplidorDAO;
+        this.dbEnv = dbEnv;
         initComponents();
         this.suplidorDAO = suplidorDAO;
         modeloDeTabla = new MiModeloDeTabla(new Object[][]{}, new String[]{"Productos", "Precios"});
@@ -181,7 +184,7 @@ public class Gestor_De_Empresas extends javax.swing.JPanel {
     }//GEN-LAST:event_ComboBoxActionPerformed
 
     private void Boton_NewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_NewActionPerformed
-        New_Suplidor  Suplidor = new New_Suplidor(Boton_New,true);
+        New_Suplidor Suplidor = new New_Suplidor(Boton_New, true, dbEnv);
         Suplidor.setVisible(true);
     }//GEN-LAST:event_Boton_NewActionPerformed
 

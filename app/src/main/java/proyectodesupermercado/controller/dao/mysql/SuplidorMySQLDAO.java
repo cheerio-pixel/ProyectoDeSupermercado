@@ -63,8 +63,8 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
     
     public Optional<Suplidor> newSuplidor(String nombre) {
         String nada ="";
-        String query = "INSERT INTO Suplidor (id, nombre, direccion) VALUES\n" +
-                       "(?, '?', '?')";
+        String query = "INSERT INTO Suplidor (id, nombre, direccion, telefono) VALUES\n" +
+                "(?, ?, ?, '')";
         
         
         try (Connection conn = dbEnv.getConnection();
@@ -90,7 +90,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
           "JOIN\n" +
           "    Suplidor S ON PR.idSuplidor = S.id\n" +
           "WHERE\n" +
-          "    S.nombre = '?';";
+                "    S.nombre = ?;";
         
         
         try (Connection conn = dbEnv.getConnection();
@@ -106,8 +106,8 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
     
        public Optional<Suplidor> ActualizarSuplidor(String nombre, String direccion ,String Telefono) {
         String query = "UPDATE Suplidor\n" +
-                       "SET direccion = '?', telefono = '?'\n" +
-                       "WHERE nombre = '?';";
+                "SET direccion = ?, telefono = ?\n" +
+                "WHERE nombre = ?;";
         
         
         try (Connection conn = dbEnv.getConnection();
@@ -126,7 +126,7 @@ public class SuplidorMySQLDAO implements SuplidorDAO {
         public Optional<Suplidor> Eliminar(String nombre) {
         String nada ="";
         String query = "DELETE FROM Suplidor\n" +
-                        "WHERE nombre = '?';";
+                "WHERE nombre = ?;";
         try (Connection conn = dbEnv.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
              statement.setString(1, nombre);

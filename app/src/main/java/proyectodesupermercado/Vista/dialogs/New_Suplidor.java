@@ -4,12 +4,13 @@
  */
 package proyectodesupermercado.Vista.dialogs;
 
+import proyectodesupermercado.controller.dao.mysql.SuplidorMySQLDAO;
+import proyectodesupermercado.lib.databaseUtils.DatabaseEnvironment;
+
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import proyectodesupermercado.controller.dao.SuplidorDAO;
-import proyectodesupermercado.controller.dao.mysql.SuplidorMySQLDAO;
 
 /**
  *
@@ -17,15 +18,16 @@ import proyectodesupermercado.controller.dao.mysql.SuplidorMySQLDAO;
  */ 
 public class New_Suplidor extends javax.swing.JDialog {
 
+    private final DatabaseEnvironment dbEnv;
     /**
      * Creates new form New_Suplidor
      */
-    public New_Suplidor(JComponent parent, boolean modal) {
+    public New_Suplidor(JComponent parent, boolean modal, DatabaseEnvironment dbEnv) {
         
         super((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parent), modal);
         setLocationRelativeTo(parent);
         initComponents();
-        
+        this.dbEnv = dbEnv;
         
     }
     
@@ -106,8 +108,8 @@ public class New_Suplidor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnviarActionPerformed
-    SuplidorMySQLDAO dennis =new SuplidorMySQLDAO();
-    String datos= Enviar.getText();
+        SuplidorMySQLDAO dennis = new SuplidorMySQLDAO(dbEnv);
+        String datos = jTextField1.getText();
      dennis.newSuplidor(datos);
     }//GEN-LAST:event_EnviarActionPerformed
 
@@ -115,47 +117,6 @@ public class New_Suplidor extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_CerrarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(New_Suplidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(New_Suplidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(New_Suplidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(New_Suplidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                New_Suplidor dialog = new New_Suplidor(null, true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cerrar;

@@ -13,11 +13,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PopupSolicitudesOnDoubleClick {
     public static MouseAdapter create(Component parent,
                                       JTable table,
-                                      ObjectTableModel<SolicitudCompra> mainModel,
+                                      AtomicReference<ObjectTableModel<SolicitudCompra>> mainModel,
                                       ControlManejoSolicitudes accionesManejoSolicitudes) {
         return new OnDoubleClick(
                 s -> {
@@ -30,7 +31,7 @@ public class PopupSolicitudesOnDoubleClick {
                             new UnmutableTable(
                                     new ObjectTableModel<>(
                                             SolicitudCompraProducto.class,
-                                            accionesManejoSolicitudes.getProductsOf(mainModel.getRow(index))
+                                            accionesManejoSolicitudes.getProductsOf(mainModel.get().getRow(index))
                                     )
                             )
                     ));

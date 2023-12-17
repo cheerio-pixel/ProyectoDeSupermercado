@@ -20,4 +20,5 @@ public abstract class HashPasswordFactory implements PasswordFactory {
             return hasher;
         }
     }
+
 }
