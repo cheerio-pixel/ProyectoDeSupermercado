@@ -1,5 +1,6 @@
 package proyectodesupermercado.lib.databaseUtils;
 
+import static io.github.pixee.security.ObjectInputFilters.createSafeObjectInputStream;
 import proyectodesupermercado.lib.databaseUtils.annotations.Column;
 import proyectodesupermercado.lib.databaseUtils.annotations.Id;
 import proyectodesupermercado.lib.databaseUtils.annotations.ManyToOne;
@@ -92,7 +93,7 @@ public class TableMapper<T> {
                     Column col = colToFieldEntry.getValue().getAnnotation(Column.class);
                     if (col != null && col.isJavaObject()) {
                         Blob blob = resultSet.getBlob(fullyQuallifiedColumnName);
-                        fieldValue = new ObjectInputStream(blob.getBinaryStream()).readObject();
+                        fieldValue = createSafeObjectInputStream(blob.getBinaryStream()).readObject();
                     } else {
                         fieldValue = resultSet.getObject(fullyQuallifiedColumnName);
                     }
