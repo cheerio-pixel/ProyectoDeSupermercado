@@ -1,5 +1,6 @@
 package proyectodesupermercado.authentication;
 
+import io.github.pixee.security.ObjectInputFilters;
 import org.junit.jupiter.api.Test;
 import proyectodesupermercado.controller.authentication.HashPasswordFactory;
 import proyectodesupermercado.controller.authentication.Password;
@@ -32,6 +33,7 @@ public class PasswordTest {
 
 
         ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("test.txt"));
+        ObjectInputFilters.enableObjectFilterIfUnprotected(objectInputStream);
         Password password1 = (Password) objectInputStream.readObject();
         objectInputStream.close();
 
